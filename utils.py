@@ -59,6 +59,25 @@ def load_messages_bundle(messages_bundle_file):
     messages_bundle = {}
     
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
+    messages_bundle = {}
+
+    try:
+        with open(messages_bundle_file, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                # Ignorer les lignes vides ou commentaires
+                if not line or line.startswith('#'):
+                    continue
+                # Séparer clé et valeur sur la première virgule
+                if ',' in line:
+                    key, value = line.split(',', 1)
+                    messages_bundle[key.strip()] = value.strip()
+    except FileNotFoundError:
+        print(f"Error: File '{messages_bundle_file}' not found.")
+    except Exception as e:
+        print(f"Error while reading '{messages_bundle_file}': {e}")
+
+    return messages_bundle
 
     # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE.
     raise NotImplementedError
