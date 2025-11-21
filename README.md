@@ -30,7 +30,7 @@ This organization presents a lot of issues:
     The organizers must manually check whether a student meets the payment deadline.
     The organizers must manually send email reminders to the students. 
 
-For this reason, we want to develop a software, called SkisatiResa, that the organizers can use to manage the registrations in an efficient way.
+For this reason, we want to develop a software, called SkisatiResa, that the organizers can use to manage the regisedijomqienfmlisehgosenlkgstrations in an efficient way.
 
 The architecture of SkisatiResa is shown in the following Figure:
 
