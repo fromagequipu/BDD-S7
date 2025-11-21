@@ -9,22 +9,31 @@ import re
 import csv
 
 def load_config():
+   def load_config():
     """Loads the application configuration from the file into a dictionary.
 
     Returns
     -------
-    A dictionary.
+    dict
         The application configuration.
     """
-    # The dictionary to return.
+
     config = {}
 
-    ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
+    # Lecture du fichier config contenant les paires clé,valeur
+    with open("./config/config", "r", encoding="utf-8") as f:
+        reader = csv.reader(f)
 
-    # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE.
-    raise NotImplementedError
+        for row in reader:
+            # On ignore les lignes vides ou incorrectes
+            if len(row) != 2:
+                continue
 
-    ##############################################################################
+            key, value = row[0].strip(), row[1].strip()
+            config[key] = value
+
+    return config
+
 
 
 def load_messages_bundle(messages_bundle_file):
