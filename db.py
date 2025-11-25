@@ -85,6 +85,19 @@ def create_database(conn, cursor):
                 FOREIGN KEY (email) REFERENCES EmailAddress(email)
             )
         ''')
+
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS EmailAddress(
+                email TEXT PRIMARY KEY
+            )
+        ''')
+
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Login(
+                year TEXT PRIMARY KEY,
+                registration_fee REAL
+            )
+        ''')
        
         
        ###################################################################
