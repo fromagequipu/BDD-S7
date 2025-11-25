@@ -86,18 +86,22 @@ def create_database(conn, cursor):
             )
         ''')
 
+        print("Creating the table EmailAddress....")
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS EmailAddress(
                 email TEXT PRIMARY KEY
             )
         ''')
 
+        print("Creating the table SkisatiEdition....")
         cursor.execute('''
-            CREATE TABLE IF NOT EXISTS Login(
+            CREATE TABLE IF NOT EXISTS SkisatiEdition(
                 year TEXT PRIMARY KEY,
                 registration_fee REAL
             )
         ''')
+
+        print("Creating the table Association....")
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS Association(
                 asso_name TEXT PRIMARY KEY,
@@ -105,6 +109,7 @@ def create_database(conn, cursor):
             )
         ''')
 
+        print("Creating the table Student_Association....")
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS Student_Association(
 		        stud_number INT,
