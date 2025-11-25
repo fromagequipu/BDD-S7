@@ -75,6 +75,13 @@ def create_database(conn, cursor):
     
        #####TODO: COMPLETE THE CODE HERE TO CREATE THE OTHER TABLES ####
 
+        print("Creating the table EmailAddress....")
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS EmailAddress(
+                email TEXT PRIMARY KEY
+            )
+        ''')
+
         print("Creating the table Student....")
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS Student(
@@ -82,14 +89,8 @@ def create_database(conn, cursor):
                 first_name TEXT,
                 last_name TEXT,
                 gender TEXT,
+                email TEXT,
                 FOREIGN KEY (email) REFERENCES EmailAddress(email)
-            )
-        ''')
-
-        print("Creating the table EmailAddress....")
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS EmailAddress(
-                email TEXT PRIMARY KEY
             )
         ''')
 
@@ -114,10 +115,9 @@ def create_database(conn, cursor):
             CREATE TABLE IF NOT EXISTS Student_Association(
 		        stud_number INT,
 		        asso_name INT,		
-                stud_number INTEGER PRIMARY KEY,
-		        asso_name TEXT PRIMARY KEY,
                 member_of TEXT,
 		        stud_role TEXT,
+                PRIMARY KEY (stud_number, asso_name),
 		        FOREIGN KEY (stud_number) REFERENCES Student(stud_number),
 		        FOREIGN KEY (asso_name) REFERENCES Association(asso_name)
             )
