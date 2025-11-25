@@ -9,7 +9,6 @@ import re
 import csv
 
 def load_config():
-   def load_config():
     """Loads the application configuration from the file into a dictionary.
 
     Returns
