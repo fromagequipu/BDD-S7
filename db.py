@@ -98,6 +98,25 @@ def create_database(conn, cursor):
                 registration_fee REAL
             )
         ''')
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Association(
+                asso_name TEXT PRIMARY KEY,
+                asso_desc TEXT
+            )
+        ''')
+
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Student_Association(
+		        stud_number INT,
+		        asso_name INT,		
+                stud_number INTEGER PRIMARY KEY,
+		        asso_name TEXT PRIMARY KEY,
+                member_of TEXT,
+		        stud_role TEXT,
+		        FOREIGN KEY (stud_number) REFERENCES Student(stud_number),
+		        FOREIGN KEY (asso_name) REFERENCES Association(asso_name)
+            )
+        ''')
        
         
        ###################################################################
