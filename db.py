@@ -117,6 +117,19 @@ def create_database(conn, cursor):
 		        FOREIGN KEY (asso_name) REFERENCES Association(asso_name)
             )
         ''')
+
+        print("Creating the table Register_For....")
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Register_For(
+                stud_number INT,
+                year TEXT,
+		        registration_date TEXT,
+		        payment_date TEXT,
+                PRIMARY KEY (stud_number, year),
+                FOREIGN KEY (stud_number) REFERENCES Student(stud_number),
+		        FOREIGN KEY (year) REFERENCES SkisatiEdition(year)
+            )
+        ''')
        
         
        ###################################################################
