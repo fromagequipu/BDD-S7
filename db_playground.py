@@ -60,6 +60,9 @@ def insert_student(stud, cursor):
         print("A database error occurred while inserting the student: {}".format(error))
         return False
 
+    # IMPORTANT : we must COMMIT the transaction, so that all tables are actually created in the database.
+    print("Student created successfully")
+    conn.commit()    
     # Everything is OK
     return True
 
@@ -112,7 +115,7 @@ def insert_clara():
     clara = {"stud_number": 12, \
         "first_name": "Clara", \
         "last_name": "Degas", \
-        "gender": "F"
+        "gender": "F", 
     }
 
     print("Insert the student Clara")
