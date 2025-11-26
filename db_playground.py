@@ -60,6 +60,9 @@ def insert_student(stud, cursor):
         print("A database error occurred while inserting the student: {}".format(error))
         return False
 
+    # IMPORTANT : we must COMMIT the transaction
+    print("Student created successfully")
+    conn.commit()    
     # Everything is OK
     return True
 
@@ -87,7 +90,21 @@ def add_email_address(stud_number, email_address, cursor):
     try:
         # TODO -- Use a parameterized query to add the email address to the database ##########
         # REMOVE pass and write your code!
-        pass
+
+        # Requête d'insertion d'un email 
+        insert_query = "INSERT INTO EmailAddress (stud_number, email) VALUES (?, ?)"
+
+        # A tuple with the values that will replace the ? in the insert_query.
+        query_values = (stud_number, email_address)
+        
+        # 
+        # We pass the function cursor.execute() two parameters: the first is the insert_query; 
+        # the second is the query_values.
+        # This is called a PARAMETERIZED QUERY, where the values of the query are passed as a parameter.
+        cursor.execute(
+            insert_query,
+            query_values
+        )
 
         ################################################################################################
     except sqlite3.IntegrityError as error:
@@ -97,6 +114,8 @@ def add_email_address(stud_number, email_address, cursor):
         print("A database error occurred while inserting the email address: {}".format(error))
         return False
 
+    print("Email created successfully")
+    conn.commit()  
     return True
 
 def insert_clara():
@@ -112,7 +131,7 @@ def insert_clara():
     clara = {"stud_number": 12, \
         "first_name": "Clara", \
         "last_name": "Degas", \
-        "gender": "F"
+        "gender": "F", 
     }
 
     print("Insert the student Clara")
@@ -142,6 +161,11 @@ if __name__ == "__main__":
     cursor = conn.cursor()
 
     insert_clara()
+
+    # Q8 - Ajout d'un email test à l'étudiant Clara 
+    add_email_address(12, "clara@gmail.com", cursor)
+    # Q9 - Ajout d'un email test à l'étudiant 13 (qui n'existe pas) 
+    add_email_address(13, "clara@gmail.com", cursor)
     
     # Closes the connection to the database
     cursor.close()

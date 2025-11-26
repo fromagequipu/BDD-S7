@@ -13,18 +13,26 @@ def load_config():
 
     Returns
     -------
-    A dictionary.
+    dict
         The application configuration.
     """
-    # The dictionary to return.
+
     config = {}
 
-    ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
+    # Lecture du fichier config contenant les paires clé,valeur
+    with open("./config/config", "r", encoding="utf-8") as f:
+        reader = csv.reader(f)
 
-    # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE.
-    raise NotImplementedError
+        for row in reader:
+            # On ignore les lignes vides ou incorrectes
+            if len(row) != 2:
+                continue
 
-    ##############################################################################
+            key, value = row[0].strip(), row[1].strip()
+            config[key] = value
+
+    return config
+
 
 
 def load_messages_bundle(messages_bundle_file):
@@ -50,6 +58,25 @@ def load_messages_bundle(messages_bundle_file):
     messages_bundle = {}
     
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
+    messages_bundle = {}
+
+    try:
+        with open(messages_bundle_file, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                # Ignorer les lignes vides ou commentaires
+                if not line or line.startswith('#'):
+                    continue
+                # Séparer clé et valeur sur la première virgule
+                if ',' in line:
+                    key, value = line.split(',', 1)
+                    messages_bundle[key.strip()] = value.strip()
+    except FileNotFoundError:
+        print(f"Error: File '{messages_bundle_file}' not found.")
+    except Exception as e:
+        print(f"Error while reading '{messages_bundle_file}': {e}")
+
+    return messages_bundle
 
     # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE.
     raise NotImplementedError

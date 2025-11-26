@@ -72,9 +72,70 @@ def create_database(conn, cursor):
             )
         ''')
 
+    
        #####TODO: COMPLETE THE CODE HERE TO CREATE THE OTHER TABLES ####
+
+        print("Creating the table Student....")
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Student(
+                stud_number INT PRIMARY KEY,
+                first_name TEXT,
+                last_name TEXT,
+                gender TEXT
+            )
+        ''')
+
+        print("Creating the table EmailAddress....")
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS EmailAddress(
+                stud_number INT PRIMARY KEY,
+                email TEXT,
+                FOREIGN KEY (stud_number) REFERENCES Student(stud_number)
+            )
+        ''')
+
+        print("Creating the table SkisatiEdition....")
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS SkisatiEdition(
+                year TEXT PRIMARY KEY,
+                registration_fee REAL
+            )
+        ''')
+
+        print("Creating the table Association....")
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Association(
+                asso_name TEXT PRIMARY KEY,
+                asso_desc TEXT
+            )
+        ''')
+
+        print("Creating the table Student_Association....")
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Student_Association(
+		        stud_number INT,
+		        asso_name INT,		
+                member_of TEXT,
+		        stud_role TEXT,
+                PRIMARY KEY (stud_number, asso_name),
+		        FOREIGN KEY (stud_number) REFERENCES Student(stud_number),
+		        FOREIGN KEY (asso_name) REFERENCES Association(asso_name)
+            )
+        ''')
+
+        print("Creating the table Register_For....")
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Register_For(
+                stud_number INT,
+                year TEXT,
+		        registration_date TEXT,
+		        payment_date TEXT,
+                PRIMARY KEY (stud_number, year),
+                FOREIGN KEY (stud_number) REFERENCES Student(stud_number),
+		        FOREIGN KEY (year) REFERENCES SkisatiEdition(year)
+            )
+        ''')
        
-        
         
        ###################################################################
         
