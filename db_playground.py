@@ -162,8 +162,10 @@ if __name__ == "__main__":
 
     #insert_clara()
 
-    # Ajout d'un email test à l'étudiant Clara 
-    add_email_address(13, "clara@gmail.com", cursor)
+    # Q8 - Ajout d'un email test à l'étudiant Clara 
+    #add_email_address(12, "clara@gmail.com", cursor)
+    # Q9 - Ajout d'un email test à l'étudiant 13 (qui n'existe pas) 
+    #add_email_address(13, "clara@gmail.com", cursor)
     
     # Closes the connection to the database
     cursor.close()
