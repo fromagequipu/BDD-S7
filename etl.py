@@ -15,8 +15,66 @@ import os
 import db
 import utils
 
+#The Python module datetime defines the necessary types for manipulating 
+# dates and times.
+# Among these types, we find one called datetime (the same name as the module) 
+# that is used to express a combination of date and time. 
 from datetime import datetime
 
+def get_right_date(input_date):
+    """Gets a date as a string in the format mm/dd/yyyy and 
+    returns that date as a string in the format "dd/mm/yyyy".
+
+    Parameters
+    ----------
+        input_date : string
+            The input date (in the format mm/dd/yyyy)
+
+    Returns
+    -------
+        A string
+            The input date in the format dd/mm/yyyy, or None if the input date is null.
+    """
+    
+    # In case we have an empty string we return None
+    if pd.isnull(input_date):
+        return None
+
+    # In order to convert the input date into the right format, we can use 
+    # a function that is called "strftime() that is defined in the 
+    # Python module datetime.
+    # Unfortunately, this function cannot directly convert a string to another string;
+    # but it can convert a variable of type "datetime" to a string.
+    # Therefore, we must first convert the input_date from a string to a datetime object;
+    # then, we can apply the function strftime() 
+    # 
+    # In order to turn the input date into a datetime object, the type "datetime" provides a function
+    # called strptime() that takes in two arguments:
+    # 
+    # * First argument: a string containing a date.
+    # * Second argumnet: a string describing the format of the date given in the first argument.
+    # The format must be expressed according to a well-defined code.
+    # For instance:
+    # * %m indicates a month as a zero-padded decimal number (01, 02, ....);
+    # * %y indicates a year without century as a zero-padded decimal number (19, 20, ...99);
+    # * %Y indicates a year as a decimal number (2019, 2020)...
+    # 
+    # The complete list of the format codes can be found at the following address:
+    # https://docs.python.org/3/library/datetime.html#strftime-strptime-behavior
+    #
+    # In the code below, the format "%m/%d/%Y" indicates that the date 
+    # given in the first argument must be mm/dd/yyyy. 
+    # If the date is not in this format  or the date is not valid (for instance, 
+    # in the input file we find 11/31/2000), a ValueError exception is raised. 
+    try:
+        input_date = datetime.strptime(input_date, "%Y-%m-%d")
+    except ValueError:
+        return None
+    
+    # Now input_date is an object of type datetime.
+    #  We finally convert the date to a string, enforcing the format that we want
+    # that is dd/mm/yyyy.
+    return input_date.strftime("%d-%m-%Y")
 
 def extract():
     """Implementation of the extraction submodule.
@@ -41,7 +99,30 @@ def extract():
     print("Extracting the data from the input CSV files...")
 
     ################## TODO: COMPLETE THE CODE OF THIS FUNCTION  #####################
+    ### Extraction de nos données dans les deux fichiers CSV ###
 
+    registrations = pd.read_csv("./data/student_registrations.csv", delimiter=';')
+    memberships = pd.read_csv("./data/student_memberships.csv", delimiter=';')
+    print(registrations)
+    print(memberships)
+
+    ### Récupération de nos données utiles pour chaque table de notre BDD ###
+
+    student_df = registrations[["stud_number", "first_name", "last_name", "gender"]]
+    email_df = registrations[["stud_number", "email"]] 
+    skisati_df = registrations[["year", "registration_fee"]] # Ici on peut avoir des duplicas car par étudiant de base mais inscription la même année et le même prix
+    register_for_df = registrations[["stud_number", "year", "registration_date", "payment_date"]]
+    association_df = memberships[["asso_name", "asso_desc"]] # Pareil, on peut avoir des duplicas car par étudiant dans les données de base mais là on veut dire les assos différentes
+    student_asso_df = memberships[["stud_number", "asso_name","stud_role"]]
+
+    ### Ajout des dataframes pour chaque table de notre BDD dans un même dictionnaire ###
+
+    dataframes["Student"] = student_df
+    dataframes["EmailAddress"] = email_df
+    dataframes["SkisatiEdition"] = skisati_df
+    dataframes["Register_For"] = register_for_df
+    dataframes["Association"] = association_df
+    dataframes["Student_Association"] = student_asso_df
     
     ##################################################################################
 
@@ -65,6 +146,45 @@ def transform(dataframes):
 
     ################## TODO: COMPLETE THE CODE OF THIS FUNCTION  #####################
 
+    ### 1 - SUPPRESSION DES DUPLICAS DANS LES DONNEES ###
+    dataframes["Student"] = dataframes["Student"].drop_duplicates()
+    dataframes["EmailAddress"] = dataframes["EmailAddress"].drop_duplicates()
+    dataframes["Association"] = dataframes["Association"].drop_duplicates()
+    dataframes["SkisatiEdition"] = dataframes["SkisatiEdition"].drop_duplicates()
+
+    ### 2 - FORMATAGE DES DATES EN DD-MM-YYYY ###
+
+    dataframes["Register_For"]["registration_date"] = dataframes["Register_For"]["registration_date"].map(get_right_date)
+    dataframes["Register_For"]["payment_date"] = dataframes["Register_For"]["payment_date"].map(get_right_date)
+
+    print(dataframes["Register_For"]["registration_date"])
+    print(dataframes["Register_For"]["payment_date"])
+
+    ### 3 - FORMATAGE DES GENRES ###
+
+    # M, H, garçon → M
+    # F, W, fille → F
+    mapping_gender = {
+        "M": "M",
+        "H": "M",
+        "garçon": "M",
+        "F": "F",
+        "W": "F",
+        "fille": "F"
+    }
+
+    # Transformation de la colonne gender avec le bon format 
+    dataframes["Student"]["gender"] = (
+        dataframes["Student"]["gender"]
+        .str.strip()
+        .map(mapping_gender)
+    )
+
+    print(dataframes["Student"]["gender"])
+
+    print("\nLignes de chaque table pour vérifier:")
+    for name, df in dataframes.items():
+        print(f"{name}: {df.shape}")
     
     ##################################################################################
 
@@ -127,7 +247,8 @@ if __name__ == "__main__":
     # REMOVE THIS BEFORE WRITING YOUR CODE.
     # pass is only added here to avoid the error mark that Visual Studio Code 
     # uses to indicate some missing code.
-    pass
+    dataframes = extract()
+    transform(dataframes)
     
     ##################################################################################
     
