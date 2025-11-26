@@ -113,7 +113,7 @@ def extract():
     skisati_df = registrations[["year", "registration_fee"]] # Ici on peut avoir des duplicas car par étudiant de base mais inscription la même année et le même prix
     register_for_df = registrations[["stud_number", "year", "registration_date", "payment_date"]]
     association_df = memberships[["asso_name", "asso_desc"]] # Pareil, on peut avoir des duplicas car par étudiant dans les données de base mais là on veut dire les assos différentes
-    student_asso_df = memberships[["stud_number", "asso_name","stud_role"]]
+    member_of_df = memberships[["stud_number", "asso_name","stud_role"]]
 
     ### Ajout des dataframes pour chaque table de notre BDD dans un même dictionnaire ###
 
@@ -122,7 +122,7 @@ def extract():
     dataframes["SkisatiEdition"] = skisati_df
     dataframes["Register_For"] = register_for_df
     dataframes["Association"] = association_df
-    dataframes["Student_Association"] = student_asso_df
+    dataframes["Member_Of"] = member_of_df
     
     ##################################################################################
 
@@ -230,11 +230,11 @@ def load(dataframes):
     
     ################## TODO: COMPLETE THE CODE OF THIS FUNCTION  #####################
     
-    
-    ##################################################################################
-
+    # Pour chaque table, on l'importe dans SQL 
     for table_name, df in dataframes.items():
         df.to_sql(table_name, conn, if_exists="append", index=False)
+    
+    ##################################################################################
     
     print("Done!")
     
