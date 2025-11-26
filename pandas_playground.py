@@ -79,6 +79,7 @@ def get_right_date(input_date):
 if __name__ == "__main__" :
 
 
+
     ################### STEP 1: read a CSV file into a Pandas dataframe ###################
 
     # The function read_csv defined in the Pandas library takes as a parameter 
@@ -193,11 +194,10 @@ if __name__ == "__main__" :
     # * index=False means that we don't want to import the Pandas row identifiers to our database.
     # 
     # TODO: uncomment the two following lines and execute the code
-<<<<<<< HEAD
-    #books.to_sql('Book', conn, if_exists="append", index=False)
-=======
+
+
     books.to_sql('Book', conn, if_exists="append", index=False)
->>>>>>> 16a0207ef787753e26b8418400bfa5511d15e5ac
+
     publishers.to_sql('Publisher', conn, index=False)
 
     print("Done!")
