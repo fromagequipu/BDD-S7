@@ -233,6 +233,9 @@ def load(dataframes):
     
     ##################################################################################
 
+    for table_name, df in dataframes.items():
+        df.to_sql(table_name, conn, if_exists="append", index=False)
+    
     print("Done!")
     
     # We close the connection to the database.
@@ -248,7 +251,7 @@ if __name__ == "__main__":
     # pass is only added here to avoid the error mark that Visual Studio Code 
     # uses to indicate some missing code.
     dataframes = extract()
-    transform(dataframes)
-    
+    dataframes= transform(dataframes)
+    load(dataframes)
     ##################################################################################
     

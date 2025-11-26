@@ -198,7 +198,6 @@ if __name__ == "__main__" :
 
     books.to_sql('Book', conn, if_exists="append", index=False)
 
-    publishers.to_sql('Publisher', conn, index=False)
 
     print("Done!")
 
