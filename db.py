@@ -112,7 +112,7 @@ def create_database(conn, cursor):
 
         print("Creating the table Member_Of....")
         cursor.execute('''
-            CREATE TABLE IF NOT EXISTS Student_Association(
+            CREATE TABLE IF NOT EXISTS Member_Of(
 		        stud_number INT,
 		        asso_name INT,		
 		        stud_role TEXT,
