@@ -75,22 +75,22 @@ def create_database(conn, cursor):
     
        #####TODO: COMPLETE THE CODE HERE TO CREATE THE OTHER TABLES ####
 
-        print("Creating the table EmailAddress....")
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS EmailAddress(
-                email TEXT PRIMARY KEY
-            )
-        ''')
-
         print("Creating the table Student....")
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS Student(
                 stud_number INT PRIMARY KEY,
                 first_name TEXT,
                 last_name TEXT,
-                gender TEXT,
+                gender TEXT
+            )
+        ''')
+
+        print("Creating the table EmailAddress....")
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS EmailAddress(
+                stud_number INT PRIMARY KEY,
                 email TEXT,
-                FOREIGN KEY (email) REFERENCES EmailAddress(email)
+                FOREIGN KEY (stud_number) REFERENCES Student(stud_number)
             )
         ''')
 
