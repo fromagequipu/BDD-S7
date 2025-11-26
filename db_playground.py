@@ -95,7 +95,7 @@ def add_email_address(stud_number, email_address, cursor):
         insert_query = "INSERT INTO EmailAddress (stud_number, email) VALUES (?, ?)"
 
         # A tuple with the values that will replace the ? in the insert_query.
-        query_values = (email_address["stud_number"], email_address["email"])
+        query_values = (stud_number, email_address)
         
         # 
         # We pass the function cursor.execute() two parameters: the first is the insert_query; 
@@ -160,9 +160,12 @@ if __name__ == "__main__":
     # The cursor is used to execute queries to the database.
     cursor = conn.cursor()
 
-    insert_clara()
+    #insert_clara()
 
-    add_email_address("12", "clara@gmail.com", cursor)
+    # Q8 - Ajout d'un email test à l'étudiant Clara 
+    #add_email_address(12, "clara@gmail.com", cursor)
+    # Q9 - Ajout d'un email test à l'étudiant 13 (qui n'existe pas) 
+    #add_email_address(13, "clara@gmail.com", cursor)
     
     # Closes the connection to the database
     cursor.close()
