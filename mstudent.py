@@ -247,9 +247,19 @@ def get_memberships(stud_number, cursor):
     
     """
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
-    
+    student_memberships = ()
+    try:
+        cursor.execute("SELECT A.asso_name, M.stud_role FROM Member_Of M JOIN Association A ON M.asso_name = A.asso_name WHERE M.stud_number = ?;")
+        row = cursor.fetchall()
+        if row is not None:
+            student_memberships = (row[0], row[1])
+    except sqlite3.Error as error:
+        print(error)
+        return None
+    print("Le resultat est", student_memberships)
+    return row
     # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE
-    raise NotImplementedError
+    #raise NotImplementedError
 
     # AFTER YOU FINISH THE IMPLEMENTATION OF THIS FUNCTION, RUN THIS FILE AS A PYTHON
     # SCRIPT. THIS WILL TRIGGER THE TEST test_get_memberships().
