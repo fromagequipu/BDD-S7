@@ -318,9 +318,11 @@ def add_email_address(stud_number, email_address, cursor):
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
     try:
         cursor.execute("""
-            INSERT INTO EmailAddress(stud_number, email)
+            INSERT INTO EmailAddress(email, stud_number)
             VALUES (?, ?)
-        """, (stud_number, email_address))
+        """, (email_address, stud_number))
+
+        conn.commit()
 
         return (True, None, None)
 
@@ -432,13 +434,15 @@ def add_student(stud_number, first_name, last_name, gender, email_addresses, cur
             "INSERT INTO Student(stud_number, first_name, last_name, gender) VALUES (?, ?, ?, ?)",
             (stud_number, first_name, last_name, gender)
         )
+        conn.commit()
 
         # Ajouter les adresses email
         for email in email_addresses:
             cursor.execute(
-                "INSERT INTO EmailAddress(stud_number, email) VALUES (?, ?)",
-                (stud_number, email)
+                "INSERT INTO EmailAddress(email, stud_number) VALUES (?, ?)",
+                (email, stud_number)
             )
+        
 
         return (True, None, None)
 
@@ -524,6 +528,7 @@ def add_membership(stud_number, membership, cursor):
             "INSERT INTO Member_Of(stud_number, asso_name, stud_role) VALUES (?, ?, ?)",
             (stud_number, asso_name, role)
         )
+        conn.commit()
 
         return (True, None, None)
 
@@ -910,7 +915,7 @@ def update_email_address(stud_number, old_email_address, new_email_address, curs
             "UPDATE EmailAddress SET email = ? WHERE stud_number = ? AND email = ?",
             (new_email_address, stud_number, old_email_address)
         )
-
+        conn.commit()
         print("Email modified successfully")
         return (True, None, None)
 
@@ -1000,6 +1005,7 @@ def update_membership(stud_number, old_association, new_association, role, curso
             "UPDATE Member_Of SET asso_name = ?, stud_role = ? WHERE stud_number = ? AND asso_name = ?",
             (new_association, role, stud_number, old_association)
         )
+        conn.commit()
         print("Membership modified successfully")
         return (True, None, None)
 
