@@ -114,7 +114,7 @@ def create_database(conn, cursor):
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS Member_Of(
 		        stud_number INT,
-		        asso_name INT,		
+		        asso_name TEXT,		
 		        stud_role TEXT,
                 PRIMARY KEY (stud_number, asso_name),
 		        FOREIGN KEY (stud_number) REFERENCES Student(stud_number),
