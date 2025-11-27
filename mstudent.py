@@ -573,15 +573,16 @@ def delete_email_address(stud_number, email_address, cursor):
     """
    ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
     
-    # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE.
-    raise NotImplementedError
+    try:
+        cursor.execute("""
+            DELETE FROM EmailAddress
+            WHERE stud_number = ? AND email = ?
+        """, (stud_number, email_address))
 
-    # AFTER YOU FINISH THE IMPLEMENTATION OF THIS FUNCTION, RUN THIS FILE AS A PYTHON
-    # SCRIPT. THIS WILL TRIGGER THE TEST test_delete_email_address(). IF THE TEST 
-    # SUCCEEDS, VERIFY (BY USING DB BROWSER FOR SQLITE) THAT IN THE DATABASE:
-    # 
-    # * The student 6655783 isn't associated to the address zineb.algourdin@etudiant.univ-rennes1.fr anymore.
-    # 
+        return (True, None, None)
+
+    except sqlite3.Error as e:
+        return (False, UNEXPECTED_ERROR, str(e))
 
     ##############################################################################
 
@@ -626,15 +627,16 @@ def delete_membership(stud_number, asso_name, cursor):
     """
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
     
-    # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE.
-    raise NotImplementedError
+    try:
+        cursor.execute("""
+            DELETE FROM Member_Of
+            WHERE stud_number = ? AND asso_name = ?
+        """, (stud_number, asso_name))
 
-    # AFTER YOU FINISH THE IMPLEMENTATION OF THIS FUNCTION, RUN THIS FILE AS A PYTHON
-    # SCRIPT. THIS WILL TRIGGER THE TEST test_delete_membership(). IF THE TEST 
-    # SUCCEEDS, VERIFY (BY USING DB BROWSER FOR SQLITE) THAT IN THE DATABASE:
-    # 
-    # * The student 36833 isn't in the association BDE anymore.
-    # 
+        return (True, None, None)
+
+    except sqlite3.Error as e:
+        return (False, UNEXPECTED_ERROR, str(e))
 
     ##############################################################################
 
