@@ -266,7 +266,7 @@ def test_add_email_address(cursor, conn):
     conn : 
         The object used to connect to the database.
     """
-    """
+
     try:
         # Trying to insert an existing email address.
         cursor.execute("BEGIN")
@@ -283,9 +283,9 @@ def test_add_email_address(cursor, conn):
         print("The function add_email_address is CORRECT! Great job!\n\n")
     except NotImplementedError:
         conn.rollback()
-    """
+
 def add_email_address(stud_number, email_address, cursor):
-    """Adds the email address of a given student.
+    """Adds an email address of a student.
 
     Parameters
     ----------
@@ -295,45 +295,41 @@ def add_email_address(stud_number, email_address, cursor):
         The student email address.
     cursor : 
         The object used to query the database.
-
+    
     Returns
     -------
-    bool
-        True if no error occurs, False otherwise.
+    A tuple T
+        (True, None, None) if no error occurs.
 
+        (False, DUPLICATE_EMAIL_ADDRESS, email) if we try to use the same email address for two different 
+        students. The variable email indicates the offending email address
+        
+        (False, UNEXPECTED_ERROR, error) if an unexpected error arises. The variable error contains the raw 
+        sqlite3.Error message.
     """
 
-    # We add the membership information on the student.
+    ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
     try:
-        # TODO -- Use a parameterized query to add the email address to the database ##########
-        # REMOVE pass and write your code!
+        cursor.execute("""
+            INSERT INTO EmailAddress(email, stud_number)
+            VALUES (?, ?)
+        """, (email_address, stud_number))
 
-        # Requête d'insertion d'un email 
-        insert_query = "INSERT INTO EmailAddress (stud_number, email) VALUES (?, ?)"
+        return (True, None, None)
 
-        # A tuple with the values that will replace the ? in the insert_query.
-        query_values = (stud_number, email_address)
-        
-        # 
-        # We pass the function cursor.execute() two parameters: the first is the insert_query; 
-        # the second is the query_values.
-        # This is called a PARAMETERIZED QUERY, where the values of the query are passed as a parameter.
-        cursor.execute(
-            insert_query,
-            query_values
-        )
+    except sqlite3.IntegrityError as e:
+        msg = str(e)
 
-        ################################################################################################
-    except sqlite3.IntegrityError as error:
-        print("An integrity error occurred while inserting the email address: {}".format(error))
-        return False
-    except sqlite3.Error as error:
-        print("A database error occurred while inserting the email address: {}".format(error))
-        return False
+        # Erreur : email déjà existant
+        if "EmailAddress.email" in msg:
+            return (False, DUPLICATE_EMAIL_ADDRESS, email_address)
 
-    print("Email created successfully")
-    conn.commit()  
-    return True
+        return (False, UNEXPECTED_ERROR, msg)
+
+    except sqlite3.Error as e:
+        return (False, UNEXPECTED_ERROR, str(e))
+    
+    ##############################################################################
     
 def test_add_student(cursor, conn):
     """Tests the function add_student
