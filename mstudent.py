@@ -609,15 +609,11 @@ def update_first_name(stud_number, first_name, cursor):
         query_values = (first_name, stud_number)
         cursor.execute(insert_query, query_values)
 
-    except sqlite3.IntegrityError as error:
-        print("An integrity error occurred while inserting the email address: {}".format(error))
-        return False
-    except sqlite3.Error as error:
-        print("A database error occurred while inserting the email address: {}".format(error))
-        return False
+        print("First Name modified successfully")
 
-    print("First Name modified successfully")
-    conn.commit()  
+    except sqlite3.Error as error:
+        print(error)
+        return (False, UNEXPECTED_ERROR, error)
     return (True, None, None)
 
     # AFTER YOU FINISH THE IMPLEMENTATION OF THIS FUNCTION, RUN THIS FILE AS A PYTHON
@@ -677,15 +673,11 @@ def update_last_name(stud_number, last_name, cursor):
         query_values = (last_name, stud_number)
         cursor.execute(insert_query, query_values)
 
-    except sqlite3.IntegrityError as error:
-        print("An integrity error occurred while inserting the email address: {}".format(error))
-        return False
-    except sqlite3.Error as error:
-        print("A database error occurred while inserting the email address: {}".format(error))
-        return False
+        print("Last Name modified successfully")
 
-    print("Last Name modified successfully")
-    conn.commit()  
+    except sqlite3.Error as error:
+        print(error)
+        return (False, UNEXPECTED_ERROR, error)
     return (True, None, None)
     
     # AFTER YOU FINISH THE IMPLEMENTATION OF THIS FUNCTION, RUN THIS FILE AS A PYTHON
@@ -745,15 +737,11 @@ def update_gender(stud_number, gender, cursor):
         query_values = (gender, stud_number)
         cursor.execute(insert_query, query_values)
 
-    except sqlite3.IntegrityError as error:
-        print("An integrity error occurred while inserting the email address: {}".format(error))
-        return False
-    except sqlite3.Error as error:
-        print("A database error occurred while inserting the email address: {}".format(error))
-        return False
+        print("Gender modified successfully")
 
-    print("Gender modified successfully")
-    conn.commit()  
+    except sqlite3.Error as error:
+        print(error)
+        return (False, UNEXPECTED_ERROR, error)
     return (True, None, None)
 
     # AFTER YOU FINISH THE IMPLEMENTATION OF THIS FUNCTION, RUN THIS FILE AS A PYTHON
@@ -821,7 +809,18 @@ def update_email_address(stud_number, old_email_address, new_email_address, curs
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
     
     # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE.
-    raise NotImplementedError
+    # Requete pour mettre à jour le champ email dans la table EmailAddress
+    try : 
+        insert_query = "UPDATE EmailAddress SET email = ? WHERE stud_number = ? AND email = ?"
+        query_values = (new_email_address, stud_number, old_email_address)
+        cursor.execute(insert_query, query_values)
+
+        print("Email modified successfully")
+
+    except sqlite3.Error as error:
+        print(error)
+        return (False, UNEXPECTED_ERROR, error)
+    return (True, None, None)
 
     # AFTER YOU FINISH THE IMPLEMENTATION OF THIS FUNCTION, RUN THIS FILE AS A PYTHON
     # SCRIPT. THIS WILL TRIGGER THE TEST test_update_email_address().
@@ -889,8 +888,18 @@ def update_membership(stud_number, old_association, new_association, role, curso
     """
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
     
-    # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE.
-    raise NotImplementedError
+    # Requete pour mettre à jour le champ asso_name et stud_role dans la table Member_Of
+    try : 
+        insert_query = "UPDATE Student_Association SET asso_name = ?, stud_role = ? WHERE stud_number = ? AND asso_name = ?"
+        query_values = (new_association, role, stud_number, old_association)
+        cursor.execute(insert_query, query_values)
+
+        print("Membership modified successfully")
+
+    except sqlite3.Error as error:
+        print(error)
+        return (False, UNEXPECTED_ERROR, error)
+    return (True, None, None)
 
     # AFTER YOU FINISH THE IMPLEMENTATION OF THIS FUNCTION, RUN THIS FILE AS A PYTHON
     # SCRIPT. THIS WILL TRIGGER THE TEST test_update_membership().
