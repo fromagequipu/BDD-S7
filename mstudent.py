@@ -670,7 +670,7 @@ def update_last_name(stud_number, last_name, cursor):
         sqlite3.Error message.
     """
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
-<<<<<<< HEAD
+
     
     # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE.
     cursor.execute(
@@ -682,8 +682,6 @@ def update_last_name(stud_number, last_name, cursor):
             (first_name, stud_number)
         )
     return (True, None, None)
-=======
->>>>>>> 4996ffae54693c734fcaf520b85c03af333068a1
 
     # Requete pour mettre à jour le champ last_name dans la table Student
     try : 
