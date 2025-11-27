@@ -73,13 +73,19 @@ def get_student(stud_number, cursor):
     If an error occurs while querying the database, the function returns None.
     """
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
-    cursor.execute("""
-            SELECT stud_number, first_name, last_name, gender
-            FROM student
-            WHERE stud_number = ?
-        """, (stud_number,))
+    student_edition = ()
+    try:
+        cursor.execute("SELECT stud_number, first_name, last_name, gender FROM Student WHERE stud_number=?", (stud_number,))
+        row = cursor.fetchone()
+        if row is not None:
+            student_edition = (row[0], row[1], row[2], row[3])
+    except sqlite3.Error as error:
+        print(error)
+        return None
+    print("Le resultat est", student_edition)
+    return student_edition
     # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE
-    raise NotImplementedError
+    #raise NotImplementedError
 
     # AFTER YOU FINISH THE IMPLEMENTATION OF THIS FUNCTION, RUN THIS FILE AS A PYTHON
     # SCRIPT. THIS WILL TRIGGER THE TEST test_get_student().
@@ -122,9 +128,19 @@ def get_associations(cursor):
     If an error occurs while querying the database, the function returns None.
     """
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
-    
+    student_association = ()
+    try:
+        cursor.execute("SELECT * FROM Association")
+        row = cursor.fetchall()
+        if row is not None:
+            student_association = (row[0], row[1])
+    except sqlite3.Error as error:
+        print(error)
+        return None
+    print("Le resultat est", student_association)
+    return row
     # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE
-    raise NotImplementedError
+    #raise NotImplementedError
 
     # AFTER YOU FINISH THE IMPLEMENTATION OF THIS FUNCTION, RUN THIS FILE AS A PYTHON
     # SCRIPT. THIS WILL TRIGGER THE TEST test_get_associations().
