@@ -357,7 +357,23 @@ def login():
     res = auth.login_correct(get_username(), get_password(), cursor)
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
+    """Callback when the user clicks the Login button."""
+    username = get_username()
+    password = get_password()
 
+    res = auth.login_correct(username, password, cursor)
+
+    if res[0]:
+        # Login successful → open main window
+        credentials_entered_state(messages_bundle["login_success"])
+        window.destroy()
+        open_main_window(cursor, conn, messages_bundle, lang)
+    elif res[1] == auth.USERNAME_NOT_FOUND:
+        credentials_entered_state(messages_bundle["username_not_found"])
+    elif res[1] == auth.INCORRECT_PASSWORD:
+        credentials_entered_state(messages_bundle["incorrect_password"])
+    else:
+        credentials_entered_state(messages_bundle["login_failed"])
     # REMOVE THIS INSTRUCTION WHEN YOU WRITE YOUR CODE
     pass
 
@@ -370,7 +386,10 @@ def clear():
     """
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
-
+    """Callback when the user clicks the Clear button."""
+    entries["username"][1].delete(0, tk.END)
+    entries["password"][1].delete(0, tk.END)
+    init_state()
     # REMOVE THIS INSTRUCTION WHEN YOU WRITE YOUR CODE
     pass
 
@@ -382,7 +401,8 @@ def cancel():
     """
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
-
+    """Callback when the user clicks the Cancel button."""
+    window.destroy()
     # REMOVE THIS INSTRUCTION WHEN YOU WRITE YOUR CODE
     pass
 
