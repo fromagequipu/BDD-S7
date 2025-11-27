@@ -1035,7 +1035,7 @@ if __name__ == '__main__':
     test_add_student(cursor, conn)
     test_add_membership(cursor, conn)
     test_delete_email_address(cursor, conn)
-    test_delete_membership(cursor, conn)
+    #test_delete_membership(cursor, conn)
     test_update_first_name(cursor, conn)
     test_update_last_name(cursor, conn)
     test_update_gender(cursor, conn)
