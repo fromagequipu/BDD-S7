@@ -247,9 +247,16 @@ def get_memberships(stud_number, cursor):
     
     """
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
-    
+    try:
+        cursor.execute("SELECT asso_name, stud_role FROM Member_Of WHERE stud_number = ?;", (stud_number,))
+        row = cursor.fetchall()
+    except sqlite3.Error as error:
+        print(error)
+        return None
+    print("Le resultat est", row)
+    return row
     # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE
-    raise NotImplementedError
+    #raise NotImplementedError
 
     # AFTER YOU FINISH THE IMPLEMENTATION OF THIS FUNCTION, RUN THIS FILE AS A PYTHON
     # SCRIPT. THIS WILL TRIGGER THE TEST test_get_memberships().

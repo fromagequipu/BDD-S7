@@ -15,7 +15,7 @@ def load_icon_image():
     """Loads the icon image of SkisatiResa
     """
     icon = Image.open("./gui/icons/skisati-logo.png")
-    icon = icon.resize((32, 32))#, Image.ANTIALIAS)
+    icon = icon.resize((32, 32), Image.LANCZOS)
     icon = ImageTk.PhotoImage(icon)
     return icon
 

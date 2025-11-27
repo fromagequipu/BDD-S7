@@ -92,10 +92,10 @@ def add_email_address(stud_number, email_address, cursor):
         # REMOVE pass and write your code!
 
         # Requête d'insertion d'un email 
-        insert_query = "INSERT INTO EmailAddress (stud_number, email) VALUES (?, ?)"
+        insert_query = "INSERT INTO EmailAddress (email, stud_number) VALUES (?, ?)"
 
         # A tuple with the values that will replace the ? in the insert_query.
-        query_values = (stud_number, email_address)
+        query_values = (email_address, stud_number)
         
         # 
         # We pass the function cursor.execute() two parameters: the first is the insert_query; 

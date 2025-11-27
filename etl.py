@@ -22,18 +22,18 @@ import utils
 from datetime import datetime
 
 def get_right_date(input_date):
-    """Gets a date as a string in the format mm/dd/yyyy and 
-    returns that date as a string in the format "dd/mm/yyyy".
+    """Gets a date as a string in the format mm-dd-yyyy and 
+    returns that date as a string in the format "dd-mm-yyyy".
 
     Parameters
     ----------
         input_date : string
-            The input date (in the format mm/dd/yyyy)
+            The input date (in the format mm-dd-yyyy)
 
     Returns
     -------
         A string
-            The input date in the format dd/mm/yyyy, or None if the input date is null.
+            The input date in the format dd-mm-yyyy, or None if the input date is null.
     """
     
     # In case we have an empty string we return None
@@ -109,7 +109,7 @@ def extract():
     ### Récupération de nos données utiles pour chaque table de notre BDD ###
 
     student_df = registrations[["stud_number", "first_name", "last_name", "gender"]]
-    email_df = registrations[["stud_number", "email"]] 
+    email_df = registrations[["email", "stud_number"]] 
     skisati_df = registrations[["year", "registration_fee"]] # Ici on peut avoir des duplicas car par étudiant de base mais inscription la même année et le même prix
     register_for_df = registrations[["stud_number", "year", "registration_date", "payment_date"]]
     association_df = memberships[["asso_name", "asso_desc"]] # Pareil, on peut avoir des duplicas car par étudiant dans les données de base mais là on veut dire les assos différentes
