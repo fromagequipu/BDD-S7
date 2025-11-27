@@ -29,6 +29,7 @@ import utils
 INSTRUCTION: The definition of global variables goes here. 
 You can add as many as you need for the realization of the window.
 """
+global password_entry, username_entry, login_button, message
 
 # The messages bundle.
 messages_bundle = {}
@@ -179,11 +180,12 @@ def _credentials_frm_widgets(credentials_frm):
     password_lbl_text = messages_bundle["password"]
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
+
     credentials_frm = ttk.Frame(window, style="Sample.TFrame")
     ttk.Label(credentials_frm, text=username_lbl_text, style="Sample.TLabel").grid(row=0, column=0, padx=10, pady=10)
-    ttk.Entry(credentials_frm).grid(row=1, column=0, padx=10, pady=10)
+    username_entry = ttk.Entry(credentials_frm).grid(row=1, column=0, padx=10, pady=10)
     ttk.Label(credentials_frm, text=password_lbl_text, style="Sample.TLabel").grid(row=2, column=0, padx=10, pady=10)
-    ttk.Entry(credentials_frm, show='*').grid(row=3, column=0, padx=10, pady=10)
+    password_entry = ttk.Entry(credentials_frm, show='*').grid(row=3, column=0, padx=10, pady=10)
     credentials_frm.columnconfigure(0, weight=1)
     credentials_frm.pack(fill=tk.BOTH, expand=True)
     
@@ -207,7 +209,7 @@ def _message_frm_widgets(message_frm):
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
 
     message_frm = ttk.Frame(window, style="Sample.TFrame")
-    ttk.Label(message_frm, text="Test", style="Sample.TLabel").grid(row=0, column=0, padx=10, pady=10)
+    message = ttk.Label(message_frm, text="Test", style="Sample.TLabel").grid(row=0, column=0, padx=10, pady=10)
     message_frm.columnconfigure(0, weight=1)
     message_frm.pack(fill=tk.BOTH, expand=True)
 
@@ -236,7 +238,7 @@ def _buttons_frm_widgets(buttons_frm):
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
 
     buttons_frm = ttk.Frame(window, style="Sample.TFrame")
-    ttk.Button(buttons_frm, text=login_btn_text).grid(row=0, column=0, padx=10, pady=10)
+    login_button = ttk.Button(buttons_frm, text=login_btn_text).grid(row=0, column=0, padx=10, pady=10)
     ttk.Button(buttons_frm, text=clear_btn_text).grid(row=0, column=1, padx=10, pady=10)
     ttk.Button(buttons_frm, text=cancel_btn_text).grid(row=0, column=2, padx=10, pady=10)
     buttons_frm.columnconfigure(0, weight=1)
@@ -252,8 +254,16 @@ def init_state():
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
 
-    # REMOVE THIS INSTRUCTION WHEN YOU WRITE YOUR CODE
-    pass
+    # Récupération des widgets de la fonction d'avant
+    global password_entry, login_button
+
+    if password_entry:
+        # Désactivation
+        password_entry.config(state="disabled")
+    if login_button:
+        # Désactivation
+        login_button.config(state="disabled")
+
     
     ####################################################################################
 
@@ -264,9 +274,9 @@ def username_entered_state():
     """
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
-
-    # REMOVE THIS INSTRUCTION WHEN YOU WRITE YOUR CODE
-    pass
+    
+    if login_button:
+        login_button.config(state="disabled")
 
     ####################################################################################
 
@@ -284,8 +294,14 @@ def credentials_entered_state(message):
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
 
-    # REMOVE THIS INSTRUCTION WHEN YOU WRITE YOUR CODE
-    pass
+    if username_entry:
+        username_entry.config(state="normal")
+    if password_entry:
+        password_entry.config(state="normal")
+    if login_button:
+        login_button.config(state="normal")
+    if message:
+        message.config(text=message)
 
     ####################################################################################
 
@@ -306,8 +322,21 @@ def username_updated(*args):
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
 
-    # REMOVE THIS INSTRUCTION WHEN YOU WRITE YOUR CODE
-    pass
+    username = username_entry.get().strip()  # Récupérer le texte du champ
+    if username:
+        # Si un username est entré, on active le champ password
+        if password_entry:
+            password_entry.config(state="normal")
+        # On désactive le login tant que le password n'est pas rempli
+        if login_button:
+            login_button.config(state="disabled")
+    else:
+        # Username vide → on remet password et login désactivés
+        if password_entry:
+            password_entry.config(state="disabled")
+        if login_button:
+            login_button.config(state="disabled")
+
 
     ####################################################################################
 
@@ -329,8 +358,19 @@ def password_updated(*args):
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
 
-    # REMOVE THIS INSTRUCTION WHEN YOU WRITE YOUR CODE
-    pass
+    password = password_entry.get().strip()
+    username = username_entry.get().strip()
+
+    if password and username:
+        # Tous les champs remplis → activer le bouton login
+        if login_button:
+            login_button.config(state="normal")
+        if message:
+            message.config(text="")  # effacer le message
+    else:
+        # Sinon, désactiver le bouton login
+        if login_button:
+            login_button.config(state="disabled")
 
     ####################################################################################
 
