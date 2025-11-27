@@ -311,9 +311,9 @@ def add_email_address(stud_number, email_address, cursor):
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
     try:
         cursor.execute("""
-            INSERT INTO EmailAddress(email, stud_number)
+            INSERT INTO EmailAddress(stud_number, email)
             VALUES (?, ?)
-        """, (email_address, stud_number))
+        """, (stud_number, email_address))
 
         return (True, None, None)
 
@@ -401,9 +401,42 @@ def add_student(stud_number, first_name, last_name, gender, email_addresses, cur
         sqlite3.Error message.
     """
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
-    
-    # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE.
-    raise NotImplementedError
+
+    try:
+        # Vérifier si le numéro d'étudiant existe déjà
+        cursor.execute(
+            "SELECT stud_number FROM Student WHERE stud_number = ?",
+            (stud_number,)
+        )
+        if cursor.fetchone():
+            return (False, DUPLICATE_STUD_NUMBER, None)
+
+        # Vérifier si une des adresses email existe déjà pour un autre étudiant
+        for email in email_addresses:
+            cursor.execute(
+                "SELECT stud_number FROM EmailAddress WHERE email = ?",
+                (email,)
+            )
+            if cursor.fetchone():
+                return (False, DUPLICATE_EMAIL_ADDRESS, email)
+
+        # Ajouter le nouvel étudiant
+        cursor.execute(
+            "INSERT INTO Student(stud_number, first_name, last_name, gender) VALUES (?, ?, ?, ?)",
+            (stud_number, first_name, last_name, gender)
+        )
+
+        # Ajouter les adresses email
+        for email in email_addresses:
+            cursor.execute(
+                "INSERT INTO EmailAddress(stud_number, email) VALUES (?, ?)",
+                (stud_number, email)
+            )
+
+        return (True, None, None)
+
+    except sqlite3.Error as e:
+        return (False, UNEXPECTED_ERROR, str(e))
 
     # AFTER YOU FINISH THE IMPLEMENTATION OF THIS FUNCTION, RUN THIS FILE AS A PYTHON
     # SCRIPT. THIS WILL TRIGGER THE TEST test_add_student().
@@ -468,8 +501,27 @@ def add_membership(stud_number, membership, cursor):
 
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
     
-    # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE.
-    raise NotImplementedError
+    try:
+        asso_name, role = membership
+
+        # Vérifie si l'étudiant est déjà dans cette association
+        cursor.execute(
+            "SELECT stud_number FROM Member_Of WHERE stud_number = ? AND asso_name = ?",
+            (stud_number, asso_name)
+        )
+        if cursor.fetchone():
+            return (False, DUPLICATE_MEMBERSHIP, asso_name)
+
+        # Ajouter la nouvelle membership
+        cursor.execute(
+            "INSERT INTO Member_Of(stud_number, asso_name, stud_role) VALUES (?, ?, ?)",
+            (stud_number, asso_name, role)
+        )
+
+        return (True, None, None)
+
+    except sqlite3.Error as e:
+        return (False, UNEXPECTED_ERROR, str(e))
 
     # AFTER YOU FINISH THE IMPLEMENTATION OF THIS FUNCTION, RUN THIS FILE AS A PYTHON
     # SCRIPT. THIS WILL TRIGGER THE TEST test_add_membership().

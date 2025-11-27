@@ -88,8 +88,8 @@ def create_database(conn, cursor):
         print("Creating the table EmailAddress....")
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS EmailAddress(
-                stud_number INT PRIMARY KEY,
-                email TEXT,
+                email TEXT PRIMARY KEY,
+                stud_number INT,
                 FOREIGN KEY (stud_number) REFERENCES Student(stud_number)
             )
         ''')
