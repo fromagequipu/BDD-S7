@@ -671,18 +671,6 @@ def update_last_name(stud_number, last_name, cursor):
     """
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
 
-    
-    # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE.
-    cursor.execute(
-            """
-            UPDATE Student
-            SET first_name = ?
-            WHERE stud_number = ?
-            """,
-            (first_name, stud_number)
-        )
-    return (True, None, None)
-
     # Requete pour mettre à jour le champ last_name dans la table Student
     try : 
         insert_query = "UPDATE Student SET last_name = ? WHERE stud_number = ? "
