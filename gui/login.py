@@ -180,11 +180,11 @@ def _credentials_frm_widgets(credentials_frm):
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
     credentials_frm = ttk.Frame(window, style="Sample.TFrame")
-
-    ttk.Entry(credentials_frm, text="Grid (0, 0)", style="Sample.TLabel").grid(row=0, column=0, padx=10, pady=10)
-    ttk.Entry(credentials_frm, show='*', text="Grid (1, 0)", style="Sample.TLabel").grid(row=0, column=1, padx=10, pady=10)
+    ttk.Label(credentials_frm, text=username_lbl_text, style="Sample.TLabel").grid(row=0, column=0, padx=10, pady=10)
+    ttk.Entry(credentials_frm).grid(row=1, column=0, padx=10, pady=10)
+    ttk.Label(credentials_frm, text=password_lbl_text, style="Sample.TLabel").grid(row=2, column=0, padx=10, pady=10)
+    ttk.Entry(credentials_frm, show='*').grid(row=3, column=0, padx=10, pady=10)
     credentials_frm.columnconfigure(0, weight=1)
-    credentials_frm.columnconfigure(1, weight=1)
     credentials_frm.pack(fill=tk.BOTH, expand=True)
     
     # TIP: when you create the text field to enter the password, you can use the argument 
@@ -206,8 +206,10 @@ def _message_frm_widgets(message_frm):
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
 
-    # REMOVE THIS INSTRUCTION WHEN YOU WRITE YOUR CODE
-    pass
+    message_frm = ttk.Frame(window, style="Sample.TFrame")
+    ttk.Label(message_frm, text="Test", style="Sample.TLabel").grid(row=0, column=0, padx=10, pady=10)
+    message_frm.columnconfigure(0, weight=1)
+    message_frm.pack(fill=tk.BOTH, expand=True)
 
     ####################################################################################
 
@@ -233,8 +235,12 @@ def _buttons_frm_widgets(buttons_frm):
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
 
-    # REMOVE THIS INSTRUCTION WHEN YOU WRITE YOUR CODE
-    pass
+    buttons_frm = ttk.Frame(window, style="Sample.TFrame")
+    ttk.Button(buttons_frm, text=login_btn_text).grid(row=0, column=0, padx=10, pady=10)
+    ttk.Button(buttons_frm, text=clear_btn_text).grid(row=0, column=1, padx=10, pady=10)
+    ttk.Button(buttons_frm, text=cancel_btn_text).grid(row=0, column=2, padx=10, pady=10)
+    buttons_frm.columnconfigure(0, weight=1)
+    buttons_frm.pack(fill=tk.BOTH, expand=True)
 
     ####################################################################################
 
