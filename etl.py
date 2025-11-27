@@ -22,18 +22,18 @@ import utils
 from datetime import datetime
 
 def get_right_date(input_date):
-    """Gets a date as a string in the format mm/dd/yyyy and 
-    returns that date as a string in the format "dd/mm/yyyy".
+    """Gets a date as a string in the format mm-dd-yyyy and 
+    returns that date as a string in the format "dd-mm-yyyy".
 
     Parameters
     ----------
         input_date : string
-            The input date (in the format mm/dd/yyyy)
+            The input date (in the format mm-dd-yyyy)
 
     Returns
     -------
         A string
-            The input date in the format dd/mm/yyyy, or None if the input date is null.
+            The input date in the format dd-mm-yyyy, or None if the input date is null.
     """
     
     # In case we have an empty string we return None
