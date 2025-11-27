@@ -250,9 +250,12 @@ def username_ok(username):
     """
 
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
+    
+    if username is None:
+        return False
 
-    # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE.
-    raise NotImplementedError
+    return len(username) >= 5
+    
     
     ##############################################################################
 
@@ -277,9 +280,18 @@ def password_ok(password):
     """
 
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
+    if password is None:
+        return False
 
-    # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE.
-    raise NotImplementedError
+    if len(password) < 5:
+        return False
+
+    has_upper = any(c.isupper() for c in password)
+    has_digit = any(c.isdigit() for c in password)
+    has_symbol = any(c in "@!#$" for c in password)
+
+    return has_upper and has_digit and has_symbol
+
 
     ##############################################################################
 
