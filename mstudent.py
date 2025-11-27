@@ -599,8 +599,22 @@ def update_first_name(stud_number, first_name, cursor):
     """
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
     
-    # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE.
-    raise NotImplementedError
+    try : 
+        # Requete pour mettre à jour le champ first_name dans la table Student
+        insert_query = "UPDATE Student SET first_name = ? WHERE stud_number = ? "
+        query_values = (first_name, stud_number)
+        cursor.execute(insert_query, query_values)
+
+    except sqlite3.IntegrityError as error:
+        print("An integrity error occurred while inserting the email address: {}".format(error))
+        return False
+    except sqlite3.Error as error:
+        print("A database error occurred while inserting the email address: {}".format(error))
+        return False
+
+    print("First Name modified successfully")
+    conn.commit()  
+    return (True, None, None)
 
     # AFTER YOU FINISH THE IMPLEMENTATION OF THIS FUNCTION, RUN THIS FILE AS A PYTHON
     # SCRIPT. THIS WILL TRIGGER THE TEST test_update_first_name(). IF THE TEST 
@@ -652,6 +666,7 @@ def update_last_name(stud_number, last_name, cursor):
         sqlite3.Error message.
     """
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
+<<<<<<< HEAD
     
     # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE.
     cursor.execute(
@@ -663,7 +678,26 @@ def update_last_name(stud_number, last_name, cursor):
             (first_name, stud_number)
         )
     return (True, None, None)
+=======
+>>>>>>> 4996ffae54693c734fcaf520b85c03af333068a1
 
+    # Requete pour mettre à jour le champ last_name dans la table Student
+    try : 
+        insert_query = "UPDATE Student SET last_name = ? WHERE stud_number = ? "
+        query_values = (last_name, stud_number)
+        cursor.execute(insert_query, query_values)
+
+    except sqlite3.IntegrityError as error:
+        print("An integrity error occurred while inserting the email address: {}".format(error))
+        return False
+    except sqlite3.Error as error:
+        print("A database error occurred while inserting the email address: {}".format(error))
+        return False
+
+    print("Last Name modified successfully")
+    conn.commit()  
+    return (True, None, None)
+    
     # AFTER YOU FINISH THE IMPLEMENTATION OF THIS FUNCTION, RUN THIS FILE AS A PYTHON
     # SCRIPT. THIS WILL TRIGGER THE TEST test_update_last_name(). IF THE TEST 
     # SUCCEEDS, VERIFY (BY USING DB BROWSER FOR SQLITE) THAT IN THE DATABASE:
@@ -714,9 +748,22 @@ def update_gender(stud_number, gender, cursor):
         sqlite3.Error message.
     """
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
-    
-    # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE.
-    raise NotImplementedError
+    # Requete pour mettre à jour le champ last_name dans la table Student
+    try : 
+        insert_query = "UPDATE Student SET last_name = ? WHERE stud_number = ? "
+        query_values = (last_name, stud_number)
+        cursor.execute(insert_query, query_values)
+
+    except sqlite3.IntegrityError as error:
+        print("An integrity error occurred while inserting the email address: {}".format(error))
+        return False
+    except sqlite3.Error as error:
+        print("A database error occurred while inserting the email address: {}".format(error))
+        return False
+
+    print("Last Name modified successfully")
+    conn.commit()  
+    return (True, None, None)
 
     # AFTER YOU FINISH THE IMPLEMENTATION OF THIS FUNCTION, RUN THIS FILE AS A PYTHON
     # SCRIPT. THIS WILL TRIGGER THE TEST test_update_gender(). IF THE TEST 
