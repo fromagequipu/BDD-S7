@@ -184,9 +184,20 @@ def get_roles(cursor):
     If an error occurs while querying the database, the function returns None.
     """
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
-    
+    student_roles = []
+    try:
+        cursor.execute("SELECT DISTINCT stud_role FROM Member_Of")
+        row = cursor.fetchall()
+        if row is not None:
+            for element in row:
+                student_roles.append(element[0])
+    except sqlite3.Error as error:
+        print(error)
+        return None
+    print("Le resultat est", student_roles)
+    return student_roles
     # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE
-    raise NotImplementedError
+    #raise NotImplementedError
 
     # AFTER YOU FINISH THE IMPLEMENTATION OF THIS FUNCTION, RUN THIS FILE AS A PYTHON
     # SCRIPT. THIS WILL TRIGGER THE TEST test_get_roles().
@@ -255,7 +266,7 @@ def test_add_email_address(cursor, conn):
     conn : 
         The object used to connect to the database.
     """
-
+    """
     try:
         # Trying to insert an existing email address.
         cursor.execute("BEGIN")
@@ -272,7 +283,7 @@ def test_add_email_address(cursor, conn):
         print("The function add_email_address is CORRECT! Great job!\n\n")
     except NotImplementedError:
         conn.rollback()
-
+    """
 def add_email_address(stud_number, email_address, cursor):
     """Adds the email address of a given student.
 
