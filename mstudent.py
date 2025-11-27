@@ -720,10 +720,11 @@ def update_gender(stud_number, gender, cursor):
         sqlite3.Error message.
     """
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
-    # Requete pour mettre à jour le champ last_name dans la table Student
+    
+    # Requete pour mettre à jour le champ gender dans la table Student
     try : 
-        insert_query = "UPDATE Student SET last_name = ? WHERE stud_number = ? "
-        query_values = (last_name, stud_number)
+        insert_query = "UPDATE Student SET gender = ? WHERE stud_number = ? "
+        query_values = (gender, stud_number)
         cursor.execute(insert_query, query_values)
 
     except sqlite3.IntegrityError as error:
@@ -733,7 +734,7 @@ def update_gender(stud_number, gender, cursor):
         print("A database error occurred while inserting the email address: {}".format(error))
         return False
 
-    print("Last Name modified successfully")
+    print("Gender modified successfully")
     conn.commit()  
     return (True, None, None)
 
