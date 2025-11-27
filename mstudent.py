@@ -837,18 +837,29 @@ def update_email_address(stud_number, old_email_address, new_email_address, curs
     
     # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE.
     # Requete pour mettre à jour le champ email dans la table EmailAddress
-    try : 
-        insert_query = "UPDATE EmailAddress SET email = ? WHERE stud_number = ? AND email = ?"
-        query_values = (new_email_address, stud_number, old_email_address)
-        cursor.execute(insert_query, query_values)
+    try:
+        # Vérifier si la nouvelle adresse email est déjà utilisée par un autre étudiant
+        cursor.execute(
+            "SELECT stud_number FROM EmailAddress WHERE email = ? AND stud_number != ?",
+            (new_email_address, stud_number)
+        )
+        row = cursor.fetchone()
+        if row:
+            # Email déjà utilisé
+            return (False, DUPLICATE_EMAIL_ADDRESS, new_email_address)
+
+        # Mettre à jour l'adresse email
+        cursor.execute(
+            "UPDATE EmailAddress SET email = ? WHERE stud_number = ? AND email = ?",
+            (new_email_address, stud_number, old_email_address)
+        )
 
         print("Email modified successfully")
+        return (True, None, None)
 
     except sqlite3.Error as error:
-        print(error)
-        return (False, UNEXPECTED_ERROR, error)
-    return (True, None, None)
-
+        # Toute autre erreur inattendue
+        return (False, UNEXPECTED_ERROR, str(error))
     # AFTER YOU FINISH THE IMPLEMENTATION OF THIS FUNCTION, RUN THIS FILE AS A PYTHON
     # SCRIPT. THIS WILL TRIGGER THE TEST test_update_email_address().
     #
@@ -916,18 +927,28 @@ def update_membership(stud_number, old_association, new_association, role, curso
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
     
     # Requete pour mettre à jour le champ asso_name et stud_role dans la table Member_Of
-    try : 
-        insert_query = "UPDATE Student_Association SET asso_name = ?, stud_role = ? WHERE stud_number = ? AND asso_name = ?"
-        query_values = (new_association, role, stud_number, old_association)
-        cursor.execute(insert_query, query_values)
+    try:
+        # Vérifier si le membre existe déjà dans la nouvelle association
+        cursor.execute(
+            "SELECT stud_number FROM Member_Of WHERE stud_number = ? AND asso_name = ?",
+            (stud_number, new_association)
+        )
+        row = cursor.fetchone()
+        if row:
+            # Le membre est déjà dans cette association
+            return (False, DUPLICATE_MEMBERSHIP, new_association)
 
+        # Mettre à jour l'association et le rôle
+        cursor.execute(
+            "UPDATE Member_Of SET asso_name = ?, stud_role = ? WHERE stud_number = ? AND asso_name = ?",
+            (new_association, role, stud_number, old_association)
+        )
         print("Membership modified successfully")
+        return (True, None, None)
 
     except sqlite3.Error as error:
-        print(error)
-        return (False, UNEXPECTED_ERROR, error)
-    return (True, None, None)
-
+        # Toute autre erreur inattendue
+        return (False, UNEXPECTED_ERROR, str(error))
     # AFTER YOU FINISH THE IMPLEMENTATION OF THIS FUNCTION, RUN THIS FILE AS A PYTHON
     # SCRIPT. THIS WILL TRIGGER THE TEST test_update_membership().
     #
