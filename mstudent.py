@@ -73,7 +73,11 @@ def get_student(stud_number, cursor):
     If an error occurs while querying the database, the function returns None.
     """
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
-    
+    cursor.execute("""
+            SELECT stud_number, first_name, last_name, gender
+            FROM student
+            WHERE stud_number = ?
+        """, (stud_number,))
     # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE
     raise NotImplementedError
 
