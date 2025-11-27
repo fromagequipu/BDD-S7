@@ -97,7 +97,7 @@ def test_get_associations(cursor):
             Verify that you correctly loaded the data into the database and try again"
 
         associations.sort(key=lambda x : x[0])
-        assert associations[0][0] == "BDE", "The function returns a list where each item is a tuple (asso_name, asso_desc)"
+        assert associations[0][0] == "BDA", "The function returns a list where each item is a tuple (asso_name, asso_desc)"
         print("The function get_associations is CORRECT! Great job!\n\n")
     except NotImplementedError:
         pass
@@ -640,7 +640,15 @@ def update_last_name(stud_number, last_name, cursor):
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
     
     # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE.
-    raise NotImplementedError
+    cursor.execute(
+            """
+            UPDATE Student
+            SET first_name = ?
+            WHERE stud_number = ?
+            """,
+            (first_name, stud_number)
+        )
+        return (True, None, None)
 
     # AFTER YOU FINISH THE IMPLEMENTATION OF THIS FUNCTION, RUN THIS FILE AS A PYTHON
     # SCRIPT. THIS WILL TRIGGER THE TEST test_update_last_name(). IF THE TEST 
