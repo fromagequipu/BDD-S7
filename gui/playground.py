@@ -37,45 +37,40 @@ second_frm.pack()
 window.mainloop()
 """
 
-entries = {}
+combo_boxes = {}
 buttons = {}
+control_labels = {}
 
-def click_ok_handler():
-    print("The user clicked OK")
+window = None
 
-def check_first_ent(*args):
-    text_field_content = entries["first_ent"][1].get().strip()
-    print("The user typed {}".format(text_field_content) )
-    if text_field_content[-1] == "#":
-        ok_enabled_state()
-    else:
-        ok_disabled_state()
+def combo_selected():
+    current_color = combo_boxes["color"].get()
+    control_labels["color_ctrl"].configure(text="The selected color is {}".format(current_color))
 
-def ok_enabled_state():
-    buttons["OK"].configure(state=["!disabled"])
-    print("The button is now enabled")
-
-def ok_disabled_state():
-    buttons["OK"].configure(state=["disabled"])
-    print("The button is now disabled")
+def destroy_window():
+    window.destroy()
 
 window = tk.Tk()
 window.title("Playground")
 configure_style()
 first_frm = ttk.Frame(window, style="Tab.TFrame")
 
-first_ent_var = tk.StringVar(value="")
-first_ent = ttk.Entry(first_frm, textvariable=first_ent_var)
-first_ent_var.trace("w", check_first_ent)
-entries["first_ent"] = (first_ent, first_ent_var)
-first_ent.pack()
+ctrl_label = ttk.Label(first_frm)
+control_labels["color_ctrl"] = ctrl_label
+ctrl_label.pack()
 
-button = ttk.Button(first_frm, state="disabled", text="OK", command=click_ok_handler)
+colors = ["red", "green", "blue", "yellow"]
+color_combo = ttk.Combobox(first_frm, values=colors)
+combo_boxes["color"] = color_combo
+color_combo.bind("<<ComboboxSelected>>", \
+        lambda event: combo_selected())
+color_combo.pack()
+
+button = ttk.Button(first_frm, text="Destroy", command=destroy_window)
 buttons["OK"] = button
 button.pack()
+
 first_frm.pack()
 window.mainloop()
-
-
 
 #####################################################################################

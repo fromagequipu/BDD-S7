@@ -179,12 +179,16 @@ def _credentials_frm_widgets(credentials_frm):
     password_lbl_text = messages_bundle["password"]
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
+    credentials_frm = ttk.Frame(window, style="Sample.TFrame")
 
+    ttk.Entry(credentials_frm, text="Grid (0, 0)", style="Sample.TLabel").grid(row=0, column=0, padx=10, pady=10)
+    ttk.Entry(credentials_frm, show='*', text="Grid (1, 0)", style="Sample.TLabel").grid(row=0, column=1, padx=10, pady=10)
+    credentials_frm.columnconfigure(0, weight=1)
+    credentials_frm.columnconfigure(1, weight=1)
+    credentials_frm.pack(fill=tk.BOTH, expand=True)
+    
     # TIP: when you create the text field to enter the password, you can use the argument 
     # show='*' of ttk.Entry() in order to hide the password while the user types it.
-    
-    # REMOVE THIS INSTRUCTION WHEN YOU WRITE YOUR CODE
-    pass
 
     ####################################################################################
     
