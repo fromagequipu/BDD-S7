@@ -180,7 +180,29 @@ def _credentials_frm_widgets(credentials_frm):
     password_lbl_text = messages_bundle["password"]
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
+    ttk.Label(credentials_frm, text=username_lbl_text).grid(row=0, column=0, sticky="w")
 
+    # Entry username
+    username_entry = ttk.Entry(credentials_frm)
+    username_entry.grid(row=0, column=1, padx=10, pady=5)
+
+    # Label password
+    ttk.Label(credentials_frm, text=password_lbl_text).grid(row=1, column=0, sticky="w")
+
+    # Entry password
+    password_entry = ttk.Entry(credentials_frm, show="*")
+    password_entry.grid(row=1, column=1, padx=10, pady=5)
+
+    # Stockage global
+    entries["username"] = ("Username", username_entry)
+    entries["password"] = ("Password", password_entry)
+
+    # Callbacks
+    username_entry.bind("<KeyRelease>", username_updated)
+    password_entry.bind("<KeyRelease>", password_updated)
+    
+    
+    """
     credentials_frm = ttk.Frame(window, style="Sample.TFrame")
     ttk.Label(credentials_frm, text=username_lbl_text, style="Sample.TLabel").grid(row=0, column=0, padx=10, pady=10)
     username_entry = ttk.Entry(credentials_frm).grid(row=1, column=0, padx=10, pady=10)
@@ -188,7 +210,7 @@ def _credentials_frm_widgets(credentials_frm):
     password_entry = ttk.Entry(credentials_frm, show='*').grid(row=3, column=0, padx=10, pady=10)
     credentials_frm.columnconfigure(0, weight=1)
     credentials_frm.pack(fill=tk.BOTH, expand=True)
-    
+    """
     # TIP: when you create the text field to enter the password, you can use the argument 
     # show='*' of ttk.Entry() in order to hide the password while the user types it.
 
@@ -207,12 +229,13 @@ def _message_frm_widgets(message_frm):
     """
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
-
+    global control_labels  
+    
     message_frm = ttk.Frame(window, style="Sample.TFrame")
-    message = ttk.Label(message_frm, text="Test", style="Sample.TLabel").grid(row=0, column=0, padx=10, pady=10)
+    msg_label = ttk.Label(message_frm, text="Test", style="Sample.TLabel").grid(row=0, column=0, padx=10, pady=10)
     message_frm.columnconfigure(0, weight=1)
     message_frm.pack(fill=tk.BOTH, expand=True)
-
+    control_labels["message"] = msg_label
     ####################################################################################
 
 def _buttons_frm_widgets(buttons_frm):
@@ -236,14 +259,33 @@ def _buttons_frm_widgets(buttons_frm):
     cancel_btn_text = messages_bundle["cancel_button"]
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
+    global buttons
 
+    login_btn_text = messages_bundle["login"]
+    clear_btn_text = messages_bundle["clear_button"]
+    cancel_btn_text = messages_bundle["cancel_button"]
+
+    login_btn = ttk.Button(buttons_frm, text=login_btn_text, command=login)
+    login_btn.grid(row=0, column=0, padx=10)
+
+    clear_btn = ttk.Button(buttons_frm, text=clear_btn_text, command=clear)
+    clear_btn.grid(row=0, column=1, padx=10)
+
+    cancel_btn = ttk.Button(buttons_frm, text=cancel_btn_text, command=cancel)
+    cancel_btn.grid(row=0, column=2, padx=10)
+
+    buttons["login"] = login_btn
+    buttons["clear"] = clear_btn
+    buttons["cancel"] = cancel_btn
+
+    """
     buttons_frm = ttk.Frame(window, style="Sample.TFrame")
     login_button = ttk.Button(buttons_frm, text=login_btn_text).grid(row=0, column=0, padx=10, pady=10)
     ttk.Button(buttons_frm, text=clear_btn_text).grid(row=0, column=1, padx=10, pady=10)
     ttk.Button(buttons_frm, text=cancel_btn_text).grid(row=0, column=2, padx=10, pady=10)
     buttons_frm.columnconfigure(0, weight=1)
     buttons_frm.pack(fill=tk.BOTH, expand=True)
-
+    """
     ####################################################################################
 
 def init_state():
@@ -255,15 +297,23 @@ def init_state():
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
 
     # Récupération des widgets de la fonction d'avant
-    global password_entry, login_button
+    
+    password_entry = entries["password"]
+    login_button = buttons["login"]
 
+    password_entry.config(state="disabled")
+    login_button.config(state="disabled")
+
+    control_labels["message"].config(text=messages_bundle["enter_username"])
+    
+    
+    #global password_entry, login_button
     if password_entry:
         # Désactivation
         password_entry.config(state="disabled")
     if login_button:
         # Désactivation
         login_button.config(state="disabled")
-
     
     ####################################################################################
 
