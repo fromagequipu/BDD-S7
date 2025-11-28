@@ -325,8 +325,7 @@ def username_entered_state():
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
     
-    if login_button:
-        login_button.config(state="disabled")
+    buttons["login"].config(state="disabled")
 
     ####################################################################################
 
@@ -344,14 +343,14 @@ def credentials_entered_state(message):
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
 
-    if username_entry:
-        username_entry.config(state="normal")
-    if password_entry:
-        password_entry.config(state="normal")
-    if login_button:
-        login_button.config(state="normal")
-    if message:
-        message.config(text=message)
+    if entries["username"]:
+        entries["username"].config(state="normal")
+    if entries["password"]:
+        entries["password"].config(state="normal")
+    if buttons["login"]:
+        buttons["login"].config(state="normal")
+    if control_labels["message"]:
+        control_labels["message"].config(text=message)
 
     ####################################################################################
 
