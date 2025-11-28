@@ -256,7 +256,6 @@ def init_state():
 
     # Récupération des widgets de la fonction d'avant
     global password_entry, login_button
-
     if password_entry:
         # Désactivation
         password_entry.config(state="disabled")
