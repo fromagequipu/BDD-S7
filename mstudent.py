@@ -75,15 +75,27 @@ def get_student(stud_number, cursor):
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
     student_edition = ()
     try:
+        # Requête pour sélectionner les informations des étudiants 
         cursor.execute("SELECT stud_number, first_name, last_name, gender FROM Student WHERE stud_number=?", (stud_number,))
-        row = cursor.fetchone()
-        if row is not None:
-            student_edition = (row[0], row[1], row[2], row[3])
+        T = cursor.fetchone()
+        if T is not None:
+            # Récupération de chaque élément
+            student_edition = (T[0], T[1], T[2], T[3])
+        else : 
+            # Si l'étudiant n'existe pas, on renvoie un tuple vide 
+            return ()
+
+        # Requête pour récupérer les emails correspondant à l'étudiant
+        cursor.execute("""SELECT email FROM EmailAddress WHERE stud_number = ?""", (stud_number,))
+        emails = [row[0] for row in cursor.fetchall()]
+    
     except sqlite3.Error as error:
         print(error)
-        return None
-    print("Le resultat est", student_edition)
-    return student_edition
+        return ()
+    # On affiche les infos de l'étudiant + les mails récupérés 
+    print("Le resultat des infos étudiant est", student_edition)
+    print("Le resultat des adresses mail associées est", emails)
+    return student_edition + (emails,)
     # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE
     #raise NotImplementedError
 
@@ -130,10 +142,11 @@ def get_associations(cursor):
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
     student_association = ()
     try:
+        # Reqûete qui permet de visualiser les infos des associations
         cursor.execute("SELECT * FROM Association")
         row = cursor.fetchall()
         if row is not None:
-            student_association = (row[0], row[1])
+            student_association = (row[0], row[1]) # Le nom et la description
     except sqlite3.Error as error:
         print(error)
         return None
@@ -186,10 +199,12 @@ def get_roles(cursor):
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
     student_roles = []
     try:
+        # Requête de récupération des différents rôles dans une association
         cursor.execute("SELECT DISTINCT stud_role FROM Member_Of")
         row = cursor.fetchall()
         if row is not None:
             for element in row:
+                # On ajoute chaque élément à une liste 
                 student_roles.append(element[0])
     except sqlite3.Error as error:
         print(error)
@@ -248,6 +263,7 @@ def get_memberships(stud_number, cursor):
     """
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
     try:
+        # Requête de sélection d'un membre d'une association
         cursor.execute("SELECT asso_name, stud_role FROM Member_Of WHERE stud_number = ?;", (stud_number,))
         row = cursor.fetchall()
     except sqlite3.Error as error:
@@ -317,19 +333,18 @@ def add_email_address(stud_number, email_address, cursor):
 
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
     try:
+        # Requête d'insertion d'un email dans la table EmailAddress 
         cursor.execute("""
             INSERT INTO EmailAddress(email, stud_number)
             VALUES (?, ?)
         """, (email_address, stud_number))
-
-        conn.commit()
-
+        conn.commit () # Validation
         return (True, None, None)
 
     except sqlite3.IntegrityError as e:
         msg = str(e)
 
-        # Erreur : email déjà existant
+        # Erreur si email déjà existant
         if "EmailAddress.email" in msg:
             return (False, DUPLICATE_EMAIL_ADDRESS, email_address)
 
@@ -412,7 +427,7 @@ def add_student(stud_number, first_name, last_name, gender, email_addresses, cur
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
 
     try:
-        # Vérifier si le numéro d'étudiant existe déjà
+        # On vérifie si le numéro d'étudiant existe déjà avec une requete de sélection
         cursor.execute(
             "SELECT stud_number FROM Student WHERE stud_number = ?",
             (stud_number,)
@@ -420,7 +435,7 @@ def add_student(stud_number, first_name, last_name, gender, email_addresses, cur
         if cursor.fetchone():
             return (False, DUPLICATE_STUD_NUMBER, None)
 
-        # Vérifier si une des adresses email existe déjà pour un autre étudiant
+        # On vérifie si les adresses email existe déjà avec une requete de sélection
         for email in email_addresses:
             cursor.execute(
                 "SELECT stud_number FROM EmailAddress WHERE email = ?",
@@ -429,20 +444,17 @@ def add_student(stud_number, first_name, last_name, gender, email_addresses, cur
             if cursor.fetchone():
                 return (False, DUPLICATE_EMAIL_ADDRESS, email)
 
-        # Ajouter le nouvel étudiant
+        # On ajoute le nouvel étudiant avec une requête d'insertion
         cursor.execute(
             "INSERT INTO Student(stud_number, first_name, last_name, gender) VALUES (?, ?, ?, ?)",
             (stud_number, first_name, last_name, gender)
         )
-        conn.commit()
 
-        # Ajouter les adresses email
+        conn.commit() # Validation
+
+        # On ajoute les adresses email entrées en paramètre en réutilisant la fonction faite avant 
         for email in email_addresses:
-            cursor.execute(
-                "INSERT INTO EmailAddress(email, stud_number) VALUES (?, ?)",
-                (email, stud_number)
-            )
-        
+            add_email_address(stud_number, email, cursor)
 
         return (True, None, None)
 
@@ -515,7 +527,7 @@ def add_membership(stud_number, membership, cursor):
     try:
         asso_name, role = membership
 
-        # Vérifie si l'étudiant est déjà dans cette association
+        # On vérifie si l'étudiant est déjà dans cette association avec une requete de sélection
         cursor.execute(
             "SELECT stud_number FROM Member_Of WHERE stud_number = ? AND asso_name = ?",
             (stud_number, asso_name)
@@ -523,12 +535,13 @@ def add_membership(stud_number, membership, cursor):
         if cursor.fetchone():
             return (False, DUPLICATE_MEMBERSHIP, asso_name)
 
-        # Ajouter la nouvelle membership
+        # On ajoute le nouveau membre sinon avec une requête d'insertion
         cursor.execute(
             "INSERT INTO Member_Of(stud_number, asso_name, stud_role) VALUES (?, ?, ?)",
             (stud_number, asso_name, role)
         )
-        conn.commit()
+
+        conn.commit() # Validation
 
         return (True, None, None)
 
@@ -586,11 +599,12 @@ def delete_email_address(stud_number, email_address, cursor):
    ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
     
     try:
+        # Requête pour supprimer une adresse mail d'un étudiant
         cursor.execute("""
             DELETE FROM EmailAddress
             WHERE stud_number = ? AND email = ?
         """, (stud_number, email_address))
-
+        conn.commit() # Validation
         return (True, None, None)
 
     except sqlite3.Error as e:
@@ -640,11 +654,12 @@ def delete_membership(stud_number, asso_name, cursor):
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
     
     try:
+        # Requête de suppression d'un membre d'une association
         cursor.execute("""
             DELETE FROM Member_Of
             WHERE stud_number = ? AND asso_name = ?
         """, (stud_number, asso_name))
-
+        conn.commit() # Validation
         return (True, None, None)
 
     except sqlite3.Error as e:
@@ -693,11 +708,11 @@ def update_first_name(stud_number, first_name, cursor):
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
     
     try : 
-        # Requete pour mettre à jour le champ first_name dans la table Student
+        # Requete pour mettre à jour le champ first_name dans la table Student pour un étudiant donné
         insert_query = "UPDATE Student SET first_name = ? WHERE stud_number = ? "
         query_values = (first_name, stud_number)
         cursor.execute(insert_query, query_values)
-
+        conn.commit()
         print("First Name modified successfully")
 
     except sqlite3.Error as error:
@@ -756,12 +771,12 @@ def update_last_name(stud_number, last_name, cursor):
     """
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
 
-    # Requete pour mettre à jour le champ last_name dans la table Student
+    # Requete pour mettre à jour le champ last_name dans la table Student pour un étudiant donné
     try : 
         insert_query = "UPDATE Student SET last_name = ? WHERE stud_number = ? "
         query_values = (last_name, stud_number)
         cursor.execute(insert_query, query_values)
-
+        conn.commit()
         print("Last Name modified successfully")
 
     except sqlite3.Error as error:
@@ -819,13 +834,13 @@ def update_gender(stud_number, gender, cursor):
         sqlite3.Error message.
     """
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
-    
-    # Requete pour mettre à jour le champ gender dans la table Student
+
     try : 
+        # Requete pour mettre à jour le champ gender dans la table Student pour un étudiant donné
         insert_query = "UPDATE Student SET gender = ? WHERE stud_number = ? "
         query_values = (gender, stud_number)
         cursor.execute(insert_query, query_values)
-
+        conn.commit()
         print("Gender modified successfully")
 
     except sqlite3.Error as error:
@@ -910,7 +925,7 @@ def update_email_address(stud_number, old_email_address, new_email_address, curs
             # Email déjà utilisé
             return (False, DUPLICATE_EMAIL_ADDRESS, new_email_address)
 
-        # Mettre à jour l'adresse email
+        # Mise à jour de l'adresse email pour l'éudiant donné
         cursor.execute(
             "UPDATE EmailAddress SET email = ? WHERE stud_number = ? AND email = ?",
             (new_email_address, stud_number, old_email_address)
@@ -1000,7 +1015,7 @@ def update_membership(stud_number, old_association, new_association, role, curso
             # Le membre est déjà dans cette association
             return (False, DUPLICATE_MEMBERSHIP, new_association)
 
-        # Mettre à jour l'association et le rôle
+        # Mise à jour de l'association et le rôle
         cursor.execute(
             "UPDATE Member_Of SET asso_name = ?, stud_role = ? WHERE stud_number = ? AND asso_name = ?",
             (new_association, role, stud_number, old_association)
@@ -1048,7 +1063,7 @@ if __name__ == '__main__':
     test_add_student(cursor, conn)
     test_add_membership(cursor, conn)
     test_delete_email_address(cursor, conn)
-    #test_delete_membership(cursor, conn)
+    test_delete_membership(cursor, conn)
     test_update_first_name(cursor, conn)
     test_update_last_name(cursor, conn)
     test_update_gender(cursor, conn)
