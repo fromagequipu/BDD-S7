@@ -231,10 +231,9 @@ def _message_frm_widgets(message_frm):
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
     global control_labels  
     
-    message_frm = ttk.Frame(window, style="Sample.TFrame")
-    msg_label = ttk.Label(message_frm, text="Test", style="Sample.TLabel").grid(row=0, column=0, padx=10, pady=10)
-    message_frm.columnconfigure(0, weight=1)
-    message_frm.pack(fill=tk.BOTH, expand=True)
+    msg_label = ttk.Label(message_frm, text=messages_bundle.get("enter_username", ""), style="Sample.TLabel")
+    msg_label.grid(row=0, column=0, padx=10, pady=10)
+    
     control_labels["message"] = msg_label
     ####################################################################################
 
@@ -297,24 +296,11 @@ def init_state():
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
 
     # Récupération des widgets de la fonction d'avant
-    
-    password_entry = entries["password"]
-    login_button = buttons["login"]
 
-    password_entry.config(state="disabled")
-    login_button.config(state="disabled")
+    entries["password"][1].config(state="disabled")
+    buttons["login"].config(state="disabled")
 
     control_labels["message"].config(text=messages_bundle["enter_username"])
-    
-    
-    #global password_entry, login_button
-    
-    if password_entry:
-        # Désactivation
-        password_entry.config(state="disabled")
-    if login_button:
-        # Désactivation
-        login_button.config(state="disabled")
     
     ####################################################################################
 
@@ -325,9 +311,8 @@ def username_entered_state():
     """
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
-    
-    if login_button:
-        login_button.config(state="disabled")
+
+    buttons["login"].config(state="disabled")
 
     ####################################################################################
 
@@ -345,14 +330,10 @@ def credentials_entered_state(message):
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
 
-    if username_entry:
-        username_entry.config(state="normal")
-    if password_entry:
-        password_entry.config(state="normal")
-    if login_button:
-        login_button.config(state="normal")
-    if message:
-        message.config(text=message)
+    entries["username"][1].config(state="normal")
+    entries["password"][1].config(state="normal")
+    buttons["login"].config(state="normal")
+    control_labels["message"].config(text=message)
 
     ####################################################################################
 
@@ -373,20 +354,19 @@ def username_updated(*args):
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
 
-    username = username_entry.get().strip()  # Récupérer le texte du champ
+    username = get_username()
+
     if username:
         # Si un username est entré, on active le champ password
-        if password_entry:
-            password_entry.config(state="normal")
-        # On désactive le login tant que le password n'est pas rempli
-        if login_button:
-            login_button.config(state="disabled")
+        entries["password"][1].config(state="normal")
+        # Désactiver le login tant que le password n'est pas rempli
+        buttons["login"].config(state="disabled")
+        control_labels["message"].config(text=messages_bundle["enter_password"])
     else:
-        # Username vide → on remet password et login désactivés
-        if password_entry:
-            password_entry.config(state="disabled")
-        if login_button:
-            login_button.config(state="disabled")
+        # Username vide, on désactive password et login
+        entries["password"][1].config(state="disabled")
+        buttons["login"].config(state="disabled")
+        control_labels["message"].config(text=messages_bundle["enter_username"])
 
 
     ####################################################################################
@@ -409,19 +389,14 @@ def password_updated(*args):
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
 
-    password = password_entry.get().strip()
-    username = username_entry.get().strip()
+    username = get_username()
+    password = get_password()
 
-    if password and username:
-        # Tous les champs remplis → activer le bouton login
-        if login_button:
-            login_button.config(state="normal")
-        if message:
-            message.config(text="")  # effacer le message
+    if username and password:
+        buttons["login"].config(state="normal")
+        control_labels["message"].config(text="")  # effacer le message
     else:
-        # Sinon, désactiver le bouton login
-        if login_button:
-            login_button.config(state="disabled")
+        buttons["login"].config(state="disabled")
 
     ####################################################################################
 
@@ -465,8 +440,6 @@ def login():
         credentials_entered_state(messages_bundle["incorrect_password"])
     else:
         credentials_entered_state(messages_bundle["login_failed"])
-    # REMOVE THIS INSTRUCTION WHEN YOU WRITE YOUR CODE
-    pass
 
     ####################################################################################
 
@@ -481,8 +454,6 @@ def clear():
     entries["username"][1].delete(0, tk.END)
     entries["password"][1].delete(0, tk.END)
     init_state()
-    # REMOVE THIS INSTRUCTION WHEN YOU WRITE YOUR CODE
-    pass
 
     ####################################################################################
 
@@ -494,8 +465,6 @@ def cancel():
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
     """Callback when the user clicks the Cancel button."""
     window.destroy()
-    # REMOVE THIS INSTRUCTION WHEN YOU WRITE YOUR CODE
-    pass
 
     ####################################################################################
     
