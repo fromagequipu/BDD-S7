@@ -268,7 +268,7 @@ def _buttons_frm_widgets(buttons_frm):
     buttons["cancel"] = cancel_btn
 
     ####################################################################################
-
+#Question 22
 def init_state():
     """Sets the state of the widgets in the INIT_STATE.
 
@@ -285,7 +285,7 @@ def init_state():
     control_labels["message"].config(text=messages_bundle["enter_username"])
     
     ####################################################################################
-
+#Question 22
 def username_entered_state():
     """Sets the state of the widgets in the USERNAME_ENTERED_STATE.
 
@@ -297,7 +297,7 @@ def username_entered_state():
     buttons["login"].config(state="disabled")
 
     ####################################################################################
-
+#Question 22
 def credentials_entered_state(message):
     """Sets the state of the widgets in the CREDENTIALS_ENTERED_STATE
 
@@ -318,7 +318,7 @@ def credentials_entered_state(message):
     control_labels["message"].config(text=message)
 
     ####################################################################################
-
+#Question 22
 def username_updated(*args):
     """Invoked when the user is typing the username.
 
@@ -353,7 +353,7 @@ def username_updated(*args):
 
     ####################################################################################
 
-        
+#Question 22        
 def password_updated(*args):
     """Invoked when the user is typing the password.
 
@@ -381,7 +381,7 @@ def password_updated(*args):
         buttons["login"].config(state="disabled")
 
     ####################################################################################
-
+#Question 23
 def login():
     """Invoked when the user clicks on the button Login.
 
@@ -424,7 +424,7 @@ def login():
         credentials_entered_state(messages_bundle["login_failed"])
 
     ####################################################################################
-
+#Question 23
 def clear():
     """Invoked when the user clicks on the button Clear.
 
@@ -438,7 +438,7 @@ def clear():
     init_state()
 
     ####################################################################################
-
+#Question 23
 def cancel():
     """Invoked when the user clicks on the button Cancel.
     
