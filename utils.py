@@ -59,7 +59,6 @@ def load_messages_bundle(messages_bundle_file):
     messages_bundle = {}
     
     ################ TODO: WRITE HERE THE CODE OF THE FUNCTION ##################
-    messages_bundle = {}
 
     try:
         with open(messages_bundle_file, 'r', encoding='utf-8') as f:
@@ -80,7 +79,7 @@ def load_messages_bundle(messages_bundle_file):
     return messages_bundle
 
     # REMOVE THE FOLLOWING INSTRUCTION WHEN YOU WRITE YOUR CODE.
-    raise NotImplementedError
+    # raise NotImplementedError
 
     ##############################################################################
 

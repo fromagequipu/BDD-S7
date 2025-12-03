@@ -100,6 +100,7 @@ def extract():
     print("Extracting the data from the input CSV files...")
 
     ################## TODO: COMPLETE THE CODE OF THIS FUNCTION  #####################
+    
     ### Extraction de nos données dans les deux fichiers CSV ###
 
     registrations = pd.read_csv("./data/student_registrations.csv", delimiter=';')
@@ -183,6 +184,7 @@ def transform(dataframes):
 
     print(dataframes["Student"]["gender"])
 
+    # Vérification du nombre de lignes
     print("\nLignes de chaque table pour vérifier:")
     for name, df in dataframes.items():
         print(f"{name}: {df.shape}")
@@ -251,8 +253,8 @@ if __name__ == "__main__":
     # REMOVE THIS BEFORE WRITING YOUR CODE.
     # pass is only added here to avoid the error mark that Visual Studio Code 
     # uses to indicate some missing code.
-    dataframes = extract()
-    dataframes= transform(dataframes)
-    load(dataframes)
+    dataframes = extract() # Extraction des données depuis un CSV
+    dataframes= transform(dataframes) # Transformation des données
+    load(dataframes) # Importation des données dans la BDD
     ##################################################################################
     
