@@ -29,7 +29,7 @@ import utils
 INSTRUCTION: The definition of global variables goes here. 
 You can add as many as you need for the realization of the window.
 """
-global password_entry, username_entry, login_button, message
+global password_entry, username_entry, buttons, message, control_labels
 
 # The messages bundle.
 messages_bundle = {}
@@ -180,20 +180,22 @@ def _credentials_frm_widgets(credentials_frm):
     password_lbl_text = messages_bundle["password"]
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
+    
+    # Label indiquant le username et sa position dans la frame (ligne 0)
     ttk.Label(credentials_frm, text=username_lbl_text).grid(row=0, column=0, sticky="w")
 
     # Entry username
     username_entry = ttk.Entry(credentials_frm)
-    username_entry.grid(row=0, column=1, padx=10, pady=5)
+    username_entry.grid(row=0, column=1, padx=10, pady=5) # Ligne 0, Colonne 1
 
-    # Label password
+    # Label indisquant le mot de passe et sa position dans la frame (ligne 1)
     ttk.Label(credentials_frm, text=password_lbl_text).grid(row=1, column=0, sticky="w")
 
-    # Entry password
+    # Entry password avec les caractères masqués (*)
     password_entry = ttk.Entry(credentials_frm, show="*")
-    password_entry.grid(row=1, column=1, padx=10, pady=5)
+    password_entry.grid(row=1, column=1, padx=10, pady=5) # Ligne 1, Colonne 1
 
-    # Stockage global
+    # Stockage global des entrées username et mdp
     entries["username"] = ("Username", username_entry)
     entries["password"] = ("Password", password_entry)
 
@@ -201,16 +203,6 @@ def _credentials_frm_widgets(credentials_frm):
     username_entry.bind("<KeyRelease>", username_updated)
     password_entry.bind("<KeyRelease>", password_updated)
     
-    
-    """
-    credentials_frm = ttk.Frame(window, style="Sample.TFrame")
-    ttk.Label(credentials_frm, text=username_lbl_text, style="Sample.TLabel").grid(row=0, column=0, padx=10, pady=10)
-    username_entry = ttk.Entry(credentials_frm).grid(row=1, column=0, padx=10, pady=10)
-    ttk.Label(credentials_frm, text=password_lbl_text, style="Sample.TLabel").grid(row=2, column=0, padx=10, pady=10)
-    password_entry = ttk.Entry(credentials_frm, show='*').grid(row=3, column=0, padx=10, pady=10)
-    credentials_frm.columnconfigure(0, weight=1)
-    credentials_frm.pack(fill=tk.BOTH, expand=True)
-    """
     # TIP: when you create the text field to enter the password, you can use the argument 
     # show='*' of ttk.Entry() in order to hide the password while the user types it.
 
@@ -229,12 +221,13 @@ def _message_frm_widgets(message_frm):
     """
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
-    global control_labels  
     
+    # Message d'indication
     msg_label = ttk.Label(message_frm, text=messages_bundle.get("enter_username", ""), style="Sample.TLabel")
     msg_label.grid(row=0, column=0, padx=10, pady=10)
     
     control_labels["message"] = msg_label
+
     ####################################################################################
 
 def _buttons_frm_widgets(buttons_frm):
@@ -258,33 +251,22 @@ def _buttons_frm_widgets(buttons_frm):
     cancel_btn_text = messages_bundle["cancel_button"]
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
-    global buttons
 
-    login_btn_text = messages_bundle["login"]
-    clear_btn_text = messages_bundle["clear_button"]
-    cancel_btn_text = messages_bundle["cancel_button"]
+    # Création des boutons
 
     login_btn = ttk.Button(buttons_frm, text=login_btn_text, command=login)
-    login_btn.grid(row=0, column=0, padx=10)
+    login_btn.grid(row=0, column=0, padx=10) # colonne 0
 
     clear_btn = ttk.Button(buttons_frm, text=clear_btn_text, command=clear)
-    clear_btn.grid(row=0, column=1, padx=10)
+    clear_btn.grid(row=0, column=1, padx=10) # colonne 1
 
     cancel_btn = ttk.Button(buttons_frm, text=cancel_btn_text, command=cancel)
-    cancel_btn.grid(row=0, column=2, padx=10)
+    cancel_btn.grid(row=0, column=2, padx=10) # colonne 2
 
     buttons["login"] = login_btn
     buttons["clear"] = clear_btn
     buttons["cancel"] = cancel_btn
 
-    """
-    buttons_frm = ttk.Frame(window, style="Sample.TFrame")
-    login_button = ttk.Button(buttons_frm, text=login_btn_text).grid(row=0, column=0, padx=10, pady=10)
-    ttk.Button(buttons_frm, text=clear_btn_text).grid(row=0, column=1, padx=10, pady=10)
-    ttk.Button(buttons_frm, text=cancel_btn_text).grid(row=0, column=2, padx=10, pady=10)
-    buttons_frm.columnconfigure(0, weight=1)
-    buttons_frm.pack(fill=tk.BOTH, expand=True)
-    """
     ####################################################################################
 
 def init_state():
