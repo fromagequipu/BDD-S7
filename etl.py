@@ -76,6 +76,7 @@ def get_right_date(input_date):
     # that is dd/mm/yyyy.
     return input_date.strftime("%d-%m-%Y")
 
+#Question 11
 def extract():
     """Implementation of the extraction submodule.
 
