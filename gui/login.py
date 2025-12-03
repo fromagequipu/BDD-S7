@@ -413,7 +413,7 @@ def login():
     # Vérification
     if res[0]:
         # Si succès, ouvre la page principale de l'appli et détruit celle-ci
-        credentials_entered_state(messages_bundle["login_success"])
+        #credentials_entered_state(messages_bundle["login_success"])
         window.destroy()
         open_main_window(cursor, conn, messages_bundle, lang)
         return (True, None, None)

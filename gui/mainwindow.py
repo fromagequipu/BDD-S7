@@ -281,7 +281,7 @@ def open_main_window(_cursor, _conn, _messages_bundle, _lang):
 
     # Add the background image.
     image = Image.open("./gui/icons/skisati-logo.png")
-    image = image.resize((400, 400), Image.ANTIALIAS)
+    image = image.resize((400, 400), Image.LANCZOS)
     image.putalpha(128)
     image = ImageTk.PhotoImage(image)
     ttk.Label(frm_intro, borderwidth=0, image=image).grid(row=0, column=0)

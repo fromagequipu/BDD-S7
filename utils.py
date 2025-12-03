@@ -88,7 +88,7 @@ def load_check_image():
     
     """
     check_image = Image.open("./gui/icons/check-128.png")
-    check_image = check_image.resize((20, 20), Image.ANTIALIAS)
+    check_image = check_image.resize((20, 20), Image.LANCZOS)
     check_image = ImageTk.PhotoImage(check_image)
     return check_image
 
