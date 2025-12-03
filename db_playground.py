@@ -66,7 +66,7 @@ def insert_student(stud, cursor):
     # Everything is OK
     return True
 
-
+#Question 8
 def add_email_address(stud_number, email_address, cursor):
     """Adds the email address of a given student.
 

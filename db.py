@@ -74,7 +74,8 @@ def create_database(conn, cursor):
 
     
        #####TODO: COMPLETE THE CODE HERE TO CREATE THE OTHER TABLES ####
-
+        #Question 4
+        
         print("Creating the table Student....")
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS Student(

@@ -8,6 +8,7 @@ from PIL import Image, ImageTk
 import re
 import csv
 
+#Question 1
 def load_config():
     """Loads the application configuration from the file into a dictionary.
 
@@ -34,7 +35,7 @@ def load_config():
     return config
 
 
-
+#Question 1
 def load_messages_bundle(messages_bundle_file):
     """Loads the messages bundle from the given file into a dictionary.
 
@@ -232,6 +233,8 @@ def is_valid_email_address(email_address):
     regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
     return re.search(regex, email_address)
 
+
+#Question 21
 def username_ok(username):
     """Returns whether the username meets the validity criteria.
 
@@ -258,7 +261,7 @@ def username_ok(username):
     
     
     ##############################################################################
-
+#Question 21
 def password_ok(password):
     """Returns whether the password meets the validity criteria.
 
