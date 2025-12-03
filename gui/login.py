@@ -277,7 +277,7 @@ def init_state():
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
 
-    # Récupération des widgets de la fonction d'avant
+    # Récupération des widgets de la fonction d'avant et mise à jour de l'état du widget
 
     entries["password"][1].config(state="disabled")
     buttons["login"].config(state="disabled")
@@ -345,7 +345,7 @@ def username_updated(*args):
         buttons["login"].config(state="disabled")
         control_labels["message"].config(text=messages_bundle["enter_password"])
     else:
-        # Username vide, on désactive password et login
+        # Si le username est vide, on désactive password et login
         entries["password"][1].config(state="disabled")
         buttons["login"].config(state="disabled")
         control_labels["message"].config(text=messages_bundle["enter_username"])
@@ -376,7 +376,7 @@ def password_updated(*args):
 
     if username and password:
         buttons["login"].config(state="normal")
-        control_labels["message"].config(text="")  # effacer le message
+        control_labels["message"].config(text="")  # Plus de message
     else:
         buttons["login"].config(state="disabled")
 
@@ -405,21 +405,24 @@ def login():
     res = auth.login_correct(get_username(), get_password(), cursor)
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
-    """Callback when the user clicks the Login button."""
-    username = get_username()
-    password = get_password()
+    
+    # Actions quand l'utilisateur clique sur Login 
 
-    res = auth.login_correct(username, password, cursor)
+    # Récupération du username et mdp
 
+    # Vérification
     if res[0]:
-        # Login successful → open main window
+        # Si succès, ouvre la page principale de l'appli et détruit celle-ci
         credentials_entered_state(messages_bundle["login_success"])
         window.destroy()
         open_main_window(cursor, conn, messages_bundle, lang)
+        return (True, None, None)
     elif res[1] == auth.USERNAME_NOT_FOUND:
         credentials_entered_state(messages_bundle["username_not_found"])
+        return (False, auth.USERNAME_NOT_FOUND, get_username())
     elif res[1] == auth.INCORRECT_PASSWORD:
         credentials_entered_state(messages_bundle["incorrect_password"])
+        return (False, auth.INCORRECT_PASSWORD, get_password())
     else:
         credentials_entered_state(messages_bundle["login_failed"])
 
@@ -433,6 +436,8 @@ def clear():
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
     """Callback when the user clicks the Clear button."""
+
+    # Suppression des valeurs dans les champs entrée et mdp
     entries["username"][1].delete(0, tk.END)
     entries["password"][1].delete(0, tk.END)
     init_state()
@@ -446,6 +451,8 @@ def cancel():
 
     ############ TODO: WRITE HERE THE CODE TO IMPLEMENT THIS FUNCTION ##########
     """Callback when the user clicks the Cancel button."""
+
+    # Destruction de la fenêtre
     window.destroy()
 
     ####################################################################################
